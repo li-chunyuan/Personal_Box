@@ -1,0 +1,96 @@
+% =============================================================
+% ②  版面与图文排版类（建议尽量靠前加载，确保后续宏包获得正确尺寸）
+% =============================================================
+\usepackage[top=25mm,bottom=25mm,left=25mm,right=25mm]{geometry}
+% geometry —— 页面边距设置      作用：统一设置页边距，常用于论文/报告规范化排版。    备注：最好最先加载，避免与后续版面相关宏包产生尺寸冲突
+\usepackage{graphicx}
+% graphicx —— 插图支持      插入图片；原生支持 PNG/JPG/PDF（不支持 WebP）      用法：\includegraphics[width=\linewidth]{fig.pdf}
+% =============================================================
+%③  关键配件支持类宏包
+% =============================================================
+\usepackage{xcolor}
+%颜色支持——定义/使用颜色；为 listings、表格等提供配色基础      说明：支持预定义颜色名、RGB/CMYK、混色（如 gray!70!black）
+\usepackage{caption}
+%题注格式美化——统一图片/表格/代码等题注的字号、加粗、间距等      说明：与 listings 结合可获得一致的“代码 x：标题”样式
+\captionsetup{font=small,labelfont=bf} % 小号题注 + 加粗“标签名”
+\usepackage{pifont}
+% pifont——符号字库，提供特殊符号，如对号、叉号、圆圈数字等。     示例：\ding{172} 输出“①”；\ding{51} 是“对号”
+\usepackage{microtype}%微排版           注意：不同引擎与语言环境支持略有差异，但通常“开箱即用”
+% 作用：改进字偶距/字距/断行，整体视觉更均衡
+% =============================================================
+% ④项目编号类
+% =============================================================
+\usepackage{enumitem}   % 自定义列表样式
+
+%\begin{enumerate}[label=\ding{\numexpr171+\arabic*}]
+%  \item 第一项
+%  \item 第二项     ①②③④⑤…
+%  \item 第三项
+%\end{enumerate}
+
+
+% \begin{enumerate}[label={(\arabic*)}]
+%   \item 第一项
+%   \item 第二项    （1）（2）（3）
+%   \item 第三项
+% \end{enumerate}
+% =============================================================
+%⑤表格增强类
+% =============================================================
+\usepackage{booktabs}%表格横线      %\toprule  表示表格最上面的粗线%      \midrule  表示表头和内容之间的中线%     \bottomrule 表格底部的粗线
+%专业表格横线     提供三个表格命令：\toprule、\midrule、\bottomrule。
+\usepackage{array}%表格列格式增强宏包      % 改进 LaTeX 原生的 tabular 环境，可以定义自定义列类型      p{3cm} 表示固定宽度 3cm 的文本列（支持自动换行）
+% 自适应列宽表格宏包
+\usepackage{tabularx}%占满整行的表格           
+%使用 X 列型让表格自动填满页面宽度。
+
+
+\newcolumntype{C}{>{\centering\arraybackslash}X}  
+% 定义新列类型 C：在 tabularx 中表示“自动伸缩且内容居中”的列
+
+% =============================================================
+%⑥代码类
+% =============================================================
+%  - listings：用于插入和高亮显示程序代码
+\usepackage{listings}
+\renewcommand{\lstlistingname}{代码}% 标题改为"代码"
+\lstdefinestyle{cstyle}{
+  language=C,
+  basicstyle=\ttfamily\small,% 代码：等宽字体、小号字体
+  numbers=left,% 左侧显示行号
+  numberstyle=\scriptsize\color{gray},%行号样式
+  numbersep=8pt,%行号与代码之间的间距
+  commentstyle=\color{gray!70!black},% 注释样式：灰色
+  showstringspaces=false,% 不显示字符串中的空格（默认会用下划线表示）
+  tabsize=4,% 设置 Tab 宽度为 4 个空格
+  frame=single, % 给代码添加单线边框
+ rulecolor=\color{teal!70!blue!30}, % 清新蓝绿色边框
+  frameround=tttt,% 四个角都采用圆角（t=top，b=bottom）
+  columns=fullflexible,  % 列宽自动调整，使字符不被压缩
+  keepspaces=true % 保持代码中的空格格式
+}
+\lstset{style=cstyle}% 将上面定义的 cstyle 样式设为默认
+
+% =============================================================
+%⑥超链接与智能引用类（加载顺序：cleveref 必须在 hyperref 之后）
+% =============================================================
+\usepackage{hyperref}%超链接/目录可点击
+\hypersetup{
+  colorlinks=false,   % 不用彩色文字
+  pdfborder={0 0 0}   % 去掉红框
+}
+
+%----------------------代码-------------------------------------
+\usepackage{cleveref}%智能引用
+\crefname{lstlisting}{代码}{代码}% 标题改为"代码"
+\providecommand{\lstlistingautorefname}{代码}% 自动引用时标题改为"代码"
+%----------------------图片-------------------------------------
+\renewcommand{\figurename}{图}% 改 caption 名称为“图”
+\renewcommand{\figureautorefname}{图}% 自动引用时标题改为“图”
+%----------------------表格-------------------------------------
+\renewcommand{\tablename}{表}% 改 caption 名称为“表”
+\renewcommand{\tableautorefname}{表}% 自动引用时标题改为“表”
+% =============================================================
+% ③ 三级标题（section/subsection/subsubsection）
+\setcounter{tocdepth}{2}    % 目录显示到二级标题
+\setcounter{secnumdepth}{3} % 标题编号到三级标题   

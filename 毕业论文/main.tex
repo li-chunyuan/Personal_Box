@@ -1,0 +1,71 @@
+% -*- coding=utf-8 -*-
+\documentclass[twoside, 12pt,openany, AutoFakeBold]{ctexbook}	% 文档类型
+\usepackage{subfiles}  % 引入 subfiles 宏包
+\include{latex/config}   % 导入公共导言（可选）
+
+%==========================部分调试编译区=============================
+
+% \includeonly{latex/cover}	% 只编译filelist.tex文件，调试时使用。		%其中“latex/”的作用是告诉LaTeX去子目录 latex/ 里找 cover.tex 文件
+
+
+
+%==========================正文开始=============================
+
+\begin{document}
+
+%==========================格式补充设置=============================
+\setlength{\baselineskip}{20pt}	% 设置行距为20磅
+
+%==========================模版载入设置=============================
+\frontmatter		% 关闭章节序号，页码默认使用小写罗马数字
+\thispagestyle{empty}
+
+%% -------------------- 封面 --------------------  
+\include{latex/cover}					% 导入封面
+
+%% -------------------- 中英文摘要 -------------------- 
+\fancypagestyle{plain}{
+	\fancyhf{}		% 清空所有定义
+	\fancyfoot[CE,CO]{\zihao{-5} \songti \thepage}      % 设置页脚为当前页码，居中,小五
+	\renewcommand{\headrulewidth}{0pt}  % 去除页眉横线
+	\renewcommand{\footrulewidth}{0pt}  % 去除页脚横线
+	}
+
+\pagestyle{abstract}
+\setcounter{page}{1}					% 重制页面编号为1
+\pagenumbering{Roman} 					% 摘要页码使用大写罗马数字
+\include{latex/cn_abstract}				% 导入中文摘要  
+\include{latex/en_abstract}				% 导入英文摘要
+ 
+%% -------------------- 目录 --------------------
+\fancypagestyle{plain}{%
+    \fancyhf{}  % 清空所有页眉页脚
+    \renewcommand{\headrulewidth}{0pt}  % 去除页眉横线
+    \renewcommand{\footrulewidth}{0pt}  % 去除页脚横线
+} 
+\pagestyle{empty}
+\tableofcontents   						% 载入目录
+\thispagestyle{empty}
+\clearpage  % 确保mainmatter从当前页开始
+
+%% -------------------- 页眉页脚 --------------------  
+\mainmatter								% 开启章节序号计数，重置页码，页码使用阿拉伯数字
+
+\fancypagestyle{plain}{\pagestyle{djtu}} % 设置默认的页面类型plain为自定义样式fancy
+\pagestyle{djtu}
+						% 设置页面布局为自定义的myfancy
+						
+%% -------------------- 正文 -------------------- 				
+\include{latex/Chapter}                 % 载入章节内容
+\backmatter                             	% 关闭章节序号，对页码没有影响
+
+%% -------------------- 谢辞 -------------------- 	
+\include{latex/Thanks}                  % 导入谢辞
+
+
+%% -------------------- 参考文献 -------------------- 
+\renewcommand*{\bibfont}{\zihao{5}\songti}
+ \printbibliography[title=参考文献,heading=bibintoc] % 导入参考文献
+
+
+\end{document}

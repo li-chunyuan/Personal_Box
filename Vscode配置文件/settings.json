@@ -1,7 +1,7 @@
 {
-      // ==========================================================    
+      // ========================================================================== 
       // —— C/C++ 开发体验 ——C/C++ 插件功能设置和vscode自带的intellisense设置
-      // ==========================================================
+      // ==========================================================================
     "C_Cpp.intelliSenseEngine": "default",//启用默认 IntelliSense 引擎（实时语法分析、类型提示）
     "C_Cpp.errorSquiggles": "enabled",//启用语法错误波浪线（调试更直观）
     "C_Cpp.autocomplete": "default",//启用 C/C++ 智能补全
@@ -15,9 +15,9 @@
       "-Wpedantic", // 强制遵循标准     fgweg
       "-Wextra"   // 启用额外的警告
     ],
-      // ==========================================================
+       // ==========================================================================
       // —— 补全与提示逻辑 ——C/C++ 插件功能设置和vscode自带的intellisense设置
-      // ==========================================================
+       // ==========================================================================
     "editor.quickSuggestions": {                 // 快速建议的启用范围
     "other": true,                             // 代码中启用补全提示
     "comments": true,                         // 注释中启用
@@ -63,9 +63,9 @@
     }
 
   },
-    // ==========================================================
+     // ==========================================================================
     // —— Code Runner 编译运行映射 ——
-    // ==========================================================
+     // ==========================================================================
     // —— Code Runner 改为在 VSCode 终端里运行 —— 
     "code-runner.runInTerminal": true,              // 关键开关：在“终端”而非“输出”里跑
     "code-runner.clearPreviousOutput": false,        // 每次运行前清屏（可选）
@@ -97,6 +97,55 @@
    "python": "& python -u \"${fullFileName.replace('\\', '\\\\')}\"",// 使用 -u 参数以确保输出实时刷新
 
   },  
+     // =========================CodeX插件==========================================
+
+
+
+
+  // ========================background插件=========================================
+    "background.enabled": true,
+
+    // "background.fullscreen": {
+    //     "images": ["file:///C:/Users/Administrator/Desktop/View/海报/Yuki.jpg"],
+    //     "opacity": 0.15, 
+    //     "size": "cover",
+    //     "position": "center"
+    // },
+      //editor  编辑器
+    "background.editor": {
+        "useFront": true,
+        "style": {
+            "background-position": "center",
+            "background-size": "cover",
+            "opacity": 0.15
+        },
+        "images": ["file:///C:/Users/Administrator/Desktop/View/海报/向死而生.jpg"]
+    },
+      //sidebar  侧边栏
+    "background.sidebar": {
+        "images": ["file:///C:/Users/Administrator/Desktop/View/海报/uptotop.jpg"],
+        "opacity": 0.2,
+        "size": "cover",
+        "position": "center"
+    },
+
+        //panel  底部面板
+    "background.panel": {
+        "images": ["file:///C:/Users/Administrator/Desktop/View/海报/nature.webp"],
+        "opacity": 0.15
+    },
+    "Codegeex.Privacy": true,
+    "Codegeex.License": "",
+    "[latex]": {
+
+      "editor.formatOnPaste": false,
+      "editor.suggestSelection": "recentlyUsedByPrefix"
+    },
+    "glassit.alpha": 255,
+    "terminal.integrated.accessibleViewFocusOnCommandExecution": true,
+    "terminal.external.windowsExec": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+    "git.autofetch": true,
+
   // =======================下面为latex配置文件=================================
 
   // ===================================================================
@@ -213,14 +262,14 @@
   // 就会自动触发编译。预览刷新最及时，真正实现“所见即所得”。
   // "onSave": 仅在保存文件时才触发编译。相对稳妥，资源占用较低。
   // "never": 从不自动编译，必须手动点击“Build”按钮或使用快捷键。
-  "latex-workshop.latex.autoBuild.run": "onFileChange",
+  "latex-workshop.latex.autoBuild.run": "onSave",
 
   // 【构建】: PDF 监视延迟
   // 当 PDF 文件发生变化时（例如编译生成了新 PDF），等待 400 毫秒后再通知 VS Code 刷新。
   // 这可以防止因 PDF 写入尚未完成而导致的预览错误。
   // 如果你的项目非常大，或者放在同步网盘（如 OneDrive, Dropbox）上，导致写入延迟，
   // 可以适当调高此数值，例如 800 或 1000。
-  "latex-workshop.latex.watch.pdf.delay": 400,
+  "latex-workshop.latex.watch.pdf.delay": 800,
 
   // 【构建】: 文件监视轮询（按需开启）
   // `false`: 默认。使用系统提供的文件事件监听。
@@ -247,9 +296,7 @@
 
   // 【Root】: 搜索 Root 文件的包含规则
   // 告诉插件，只有匹配 `**/*.tex` (任意目录下的 .tex 文件) 才可能是主文件。
-  "latex-workshop.latex.search.rootFiles.include": [
-    "**/*.tex"
-  ],
+  "latex-workshop.latex.search.rootFiles.include": [  "**/*.tex"],
 
   // 【Root】: 搜索 Root 文件的排除规则
   // 告诉插件在查找主文件时，忽略这些目录。
@@ -260,7 +307,8 @@
     "**/node_modules/**",
     "**/.history/**",
     "**/.vscode/**",
-    "out/**"
+    "out/**",
+    "latex/**"
   ],
 
   // ===================================================================
@@ -280,6 +328,21 @@
     // 1. 自动检测是否需要多次编译（以确保引用、目录正确）。
     // 2. 自动检测是否需要调用 bibtex/biber (处理文献)。
     // 3. 自动检测是否需要调用 makeindex/makeglossaries (处理索引/术语)。
+    {
+      "name": "latexmk-aux-only",
+      "command": "latexmk",
+      "args": [
+        "-xelatex",
+        "-synctex=1",                 // 生成 SyncTeX 文件，用于正反向同步
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-auxdir=%DIR%/out",
+        "-emulate-aux-dir",
+        "%DOC%"
+  ]
+    },
+
+
     {
       "name": "latexmk (xelatex)", // xelatex：对中文(CJK)和现代字体(OTF/TTF)支持最好
       "command": "latexmk",
@@ -460,6 +523,11 @@
   "latex-workshop.latex.recipes": [
     // ---- 推荐：使用 latexmk 的配方 (最省心) ----
     // 它们都只包含一个工具，因为 latexmk 已经“全自动”处理了所有事情。
+    {
+      "name": "latexmk ▶ PDF（aux→out, pdf→root）",
+      "tools": ["latexmk-aux-only"]
+    },
+    
     {
       "name": "latexmk: xelatex（推荐）",
       "tools": [
@@ -803,59 +871,5 @@
     "*.sty": "latex",
     "*.bib": "bibtex"
   },
-  "workbench.editor.empty.hint": "hidden",
-
-
-
-
- 
-  
-  // ========================background插件=========================================
-    "background.enabled": true,
-
-    // "background.fullscreen": {
-    //     "images": ["file:///C:/Users/Administrator/Desktop/View/海报/Yuki.jpg"],
-    //     "opacity": 0.15, 
-    //     "size": "cover",
-    //     "position": "center"
-    // },
-      //editor  编辑器
-    "background.editor": {
-        "useFront": true,
-        "style": {
-            "background-position": "center",
-            "background-size": "cover",
-            "opacity": 0.15
-        },
-        "images": ["file:///C:/Users/Administrator/Desktop/View/海报/向死而生.jpg"]
-    },
-      //sidebar  侧边栏
-    "background.sidebar": {
-        "images": ["file:///C:/Users/Administrator/Desktop/View/海报/uptotop.jpg"],
-        "opacity": 0.2,
-        "size": "cover",
-        "position": "center"
-    },
-
-        //panel  底部面板
-    "background.panel": {
-        "images": ["file:///C:/Users/Administrator/Desktop/View/海报/nature.webp"],
-        "opacity": 0.15
-    },
-    "Codegeex.Privacy": true,
-    "Codegeex.License": "",
-    "[latex]": {
-
-      "editor.formatOnPaste": false,
-      "editor.suggestSelection": "recentlyUsedByPrefix"
-    },
-    "glassit.alpha": 255,
-    "terminal.integrated.accessibleViewFocusOnCommandExecution": true,
-    "terminal.external.windowsExec": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
-    "git.autofetch": true,
-    
-
-
-
-
+  "workbench.editor.empty.hint": "hidden"
 }
