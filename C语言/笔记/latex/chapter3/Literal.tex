@@ -1,0 +1,291 @@
+\section{从字面量（Literal）到数据类型}
+
+\subsection{何为魔法数字？}
+首先来解释一下什么是字面量。在C语言中，字面量指的是
+直接出现在源代码中的常量值，无需标识符即可使用。说得
+大白话一点，就是代码中一个又一个数据。如\autoref{lst:literal}
+所示，代码中出现的一个又一个常量数字如\texttt{42}、\texttt{'A'}、
+\texttt{3.1416}、\texttt{Hi}
+就是字面量。
+
+
+\begin{lstlisting}[language=C,caption={C 语言中字面量的示例},label={lst:literal}]
+#include <stdio.h>
+
+int main(void) {
+    int x = 42;          // 42 是整型字面量
+    char c = 'A';        // 'A' 是字符字面量
+    double pi = 3.1416;  // 3.1416 是浮点字面量
+    printf("%s\n", "Hi"); // "Hi" 是字符串字面量
+    return 0;
+}
+\end{lstlisting}
+
+
+在我们日常生活中，我们每天都会接触大量的
+数据，比如购物、计数。但我们从来不会纠结于
+数据类型或是字面量这些乱七八糟的东西。这是因为
+在日常生活中，我们普遍使用\textbf{十进制}，
+所以对于我们彼此交流的时候，从来都不会纠结于进制、类型问题。
+
+
+但在计算机中可不是这样，首先在计算机底部存储数字
+使用二进制，而其他八进制、十六进制等进制也是常见的表示方式，
+再加上由于计算机存储数据的方式不同又诞生了浮点数
+、整型数、字符。所以当你冷不丁地给计算机抛出一个数字42时,计算机
+并不能理解这个数字到底是什么进制、类型，如\autoref{lst:42}
+所示，计算机并不能理解这是十进制的42，还是
+八进制的\texttt{34}，还是十六进制的\texttt{68}。它更无法理解这到底是
+\texttt{int}、\texttt{double}还是\texttt{float}。
+
+计算机此时只能按照默认处理规则进行处理，默认情况下这个\texttt{42}
+将被理解为十进制、\texttt{int}类型的数据。但如果你的本意并不是这样，
+而是想表达其他进制或类型的数据，那么计算机就会误解你的意思。那么在
+工程场景下，往往就会引发严重的错误。
+
+
+\begin{lstlisting}[language=C,caption={魔法数字实例},label={lst:42}]
+                                      42
+\end{lstlisting}
+
+计算机遇到这种情况时，
+它是无法理解的，因为它不知道这个数字到底是什么进制、类型。
+这就好像一个麻瓜突然看到一个魔法师念咒语一样（来自哈利波特），
+它根本无法理解魔法师到底在说什么。对于这种情况，我们形象地
+称为魔法数字（Magic Number）。
+
+
+
+\subsection{定义与概念}
+在 \textbf{C 语言标准}（如 ISO/IEC 9899:2018, C17）中，``字面量''（\textit{literal} 或 \textit{literal constant}）是一个正式存在的术语。  
+它指的是 \textbf{直接出现在源代码中的常量值}，无需标识符即可使用。
+
+\begin{center}
+\begin{tabular}{lll}
+\hline
+\textbf{字面量类型} & \textbf{示例} & \textbf{说明} \\
+\hline
+整型字面量 (integer literal) & \verb|123|, \verb|0x7B|, \verb|010| & 十进制、十六进制、八进制整数 \\
+浮点型字面量 (floating-point literal) & \verb|3.14|, \verb|1e-3| & 双精度浮点数 \\
+字符字面量 (character constant) & \verb|'A'|, \verb|'\n'| & 单个字符，本质为 \verb|int| 类型 \\
+字符串字面量 (string literal) & \verb|"Hello"| & 以 \verb|\0| 结尾的 \verb|char| 数组 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{字面量的具体区分方式}
+
+C 语言里面通过“前缀（\texttt{prefix}）”和“后缀（\texttt{suffix}）”来对
+字面量（\texttt{literal}）进行类型和进制的区分。
+本节总结了 C 语言中通过前缀 \texttt{（Prefix）} 与
+后缀 \texttt{（Suffix）} 来区分字面量的进制与类型的方式。
+内容适用于 C89/C99/C11/C23 标准。
+
+
+
+\subsubsection{整数：通过前缀区分进制}
+
+整数字面量可使用前缀（\texttt{prefix}）确定进制，如 \autoref{tab:int-prefix} 所示。
+
+\begin{table}[h!]
+\centering
+\caption{整数前缀及其含义}\label{tab:int-prefix}
+\begin{tabular}{c|c|c}
+\hline
+前缀 & 进制 & 示例 \\ \hline
+(无前缀) & 十进制 & \verb|123| \\
+\verb|0| & 八进制 & \verb|0123| （十进制 83）\\
+\verb|0x| / \verb|0X| & 十六进制 & \verb|0x123| （十进制 291）\\
+\verb|0b| / \verb|0B|（C23） & 二进制 & \verb|0b1010| （十进制 10）\\
+\hline
+\end{tabular}
+\end{table}
+
+
+注意：
+\begin{itemize}
+    \item 以 \texttt{0} 开头的整数默认按八进制解析（如 \texttt{0123} $\neq$ \texttt{123}）。
+    所以在 C 语言中避免使用前导零，以免引起歧义。这算是一个非常经典的错误原因呢。
+    \item  C89/C99/C11 没有二进制前缀， 直到 C23 才正式加入\texttt{0b}作为二进制前缀，
+    有些编译器（如 GCC）较早支持。
+    \item C 语言中只有十六进制浮点数可以带前缀，其他进制的浮点数一律不允许带前缀。
+    （具体见后文）。
+\end{itemize}
+
+
+ 
+\subsubsection{整数：通过后缀区分类型}
+
+
+
+整数字面量的类型可由后缀（Suffix）确定。表 \ref{tab:int-suffix} 汇总了常见后缀。
+
+\begin{table}[h!]
+\centering
+\caption{整数类型后缀}\label{tab:int-suffix}
+\begin{tabular}{c|c|c}
+\hline
+后缀 & 类型 & 示例 \\ \hline
+\verb|u| / \verb|U| & unsigned int & \verb|123U| \\
+\verb|l| / \verb|L| & long int & \verb|123L| \\
+\verb|ll| / \verb|LL| & long long int & \verb|123LL| \\
+\verb|ul| / \verb|UL| & unsigned long etc & \verb|123UL|, \verb|123LU| \\
+组合使用 & unsigned long long 等 & \verb|123ULL|, \verb|123LLU| \\
+\hline
+\end{tabular}
+\end{table}
+
+如\autoref{lst:int-suffix}所示，不同的类型其实意味着存储空间和取值范围的不同。
+所以当你需要表示更大范围的整数时，可以使用相应的后缀来指定类型。如果这个范围不匹配，
+编译器会报错或发出警告。
+
+
+\begin{lstlisting}[language=C,caption={后缀示例},label={lst:int-suffix}]
+123U      // unsigned int             0 ～ 4294967295
+123L      // long int              -2147483648 ～ 2147483647 (32位系统)
+123UL     // unsigned long int        0 ～ 4294967295 (32位系统) 
+123LL     // long long int         -9223372036854775808 ～ 9223372036854775807 
+123LLU    // unsigned long long int   0 ～ 18446744073709551615
+  
+//以上给出的数据范围基于常见的32位和64位系统，
+//实际范围基于编译器、CPU 架构和操作系统选择的数据模型而异。
+
+\end{lstlisting}
+
+\vspace{1em}
+\noindent\textbf{注意}
+
+作为整数字面量后缀：llu 和 ull 完全等价，可以随便使用，没有任何问题。
+但在 printf 格式字符串中：必须用 \%llu，不能用 \%ull。所以我推荐大家统一
+记忆llu。
+
+
+
+
+
+\subsection{浮点数：无前缀（Prefix 不可用）}
+
+浮点数 \textbf{不能使用前缀} 来表示进制，不能像整数那样写成八进制、二进制或普通十六进制形式：
+
+\begin{itemize}
+    \item \verb|012.3| （非法，浮点不能为八进制）
+    \item \verb|0b1.01| （非法，C 不支持二进制小数）
+    \item \verb|0x3.14| （非法的普通十六进制形式）
+\end{itemize}
+
+因此：
+\[
+\textbf{浮点字面量不允许使用任何前缀。}
+\]
+
+\subsection{浮点数的后缀（常用）}
+
+浮点字面量只能用后缀确定类型，如表 \ref{tab:float-suffix} 所示。
+
+\begin{table}[h!]
+\centering
+\caption{浮点字面量后缀}\label{tab:float-suffix}
+\begin{tabular}{c|c|c}
+\hline
+后缀 & 类型 & 示例 \\ \hline
+(无后缀) & double & \verb|3.14| \\
+\verb|f| / \verb|F| & float & \verb|3.14f| \\
+\verb|l| / \verb|L| & long double & \verb|3.14L| \\
+\hline
+\end{tabular}
+\end{table}
+
+示例：
+
+\begin{verbatim}
+3.14f        // float
+2.718L       // long double
+1e-3         // double
+\end{verbatim}
+
+\subsection{特殊情况：十六进制浮点（C99 起）}
+
+C99 引入了特殊语法的十六进制浮点常量，格式为：
+
+\[
+\verb|0x<hex>.<hex>p<指数>|
+\]
+
+其中 \verb|p| 的指数表示 $2^{指数}$。示例：
+
+\begin{verbatim}
+double x = 0x1.8p2;   // = (1 + 8/16) * 2^2 = 6.0
+\end{verbatim}
+
+注意：
+\begin{itemize}
+    \item 这是一种“特殊语法”，不是普通意义的“前缀决定进制”。
+    \item 仅 C99 及之后标准支持。
+\end{itemize}
+
+\subsection{总结}
+
+\begin{itemize}
+    \item 整数字面量：\textbf{前缀区分进制，后缀区分类型}。
+    \item 浮点字面量：\textbf{无前缀，只能用后缀区分类型}。
+    \item C99 起提供十六进制浮点字面量（如 \verb|0x1.2p3|）。
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{center}
+\begin{tabular}{lllll}
+\hline
+\textbf{名称} & \textbf{是否存在于语法中} & \textbf{是否有标识符} & \textbf{示例} & \textbf{说明} \\
+\hline
+字面量 (\textit{literal}) & 是 & 否 & \verb|3.14|, \verb|'A'|, \verb|"abc"| & 直接出现在代码中 \\
+常量 (\textit{constant}) & 是 & 是 & \verb|const int a = 10;| & 存储在命名空间中 \\
+\hline
+\end{tabular}
+\end{center}
+
+因此，\verb|10| 是一个字面量，而在 \verb|const int a = 10;| 中的 \verb|a| 是一个常量。
+
+\subsection{延伸说明}
+\begin{itemize}
+  \item C 语言仅定义了四类基本字面量：整型、浮点型、字符和字符串。
+  \item C++ 对字面量进行了扩展，例如用户自定义字面量 \verb|42_km|。
+  \item 在 C17 标准第 \S6.4 节中，``literal'' 一词被正式用于描述这些常量。
+\end{itemize}
+
+
+
+\subsection{总结}
+在 C 语言标准中，``字面量''（literal）是正式术语，
+表示直接出现在源代码中的常量值，如 \verb|10|、\verb|'A'|、\verb|"abc"| 等。 
+它们是语法结构的一部分，而非常量变量。
+
