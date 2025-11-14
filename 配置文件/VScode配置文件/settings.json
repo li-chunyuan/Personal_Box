@@ -6,7 +6,7 @@
     "C_Cpp.errorSquiggles": "enabled",//启用语法错误波浪线（调试更直观）
     "C_Cpp.autocomplete": "default",//启用 C/C++ 智能补全
       // 编译器设置
-    "C_Cpp.default.compilerPath": "D:\\Personal Software\\MinGW\\mingw64\\bin\\gcc.exe",  // 编译器路径
+    "C_Cpp.default.compilerPath": "D:/Personal_Software/mingw64/bin/gcc.exe",  // 编译器路径
     "C_Cpp.default.cStandard": "c17",             // C 标准设置
     "C_Cpp.default.cppStandard": "c++17",         // C++ 标准设置
     "C_Cpp.default.intelliSenseMode": "windows-gcc-x64",  // IntelliSense 模式
@@ -15,19 +15,21 @@
       "-Wpedantic", // 强制遵循标准     fgweg
       "-Wextra"   // 启用额外的警告
     ],
+    "C_Cpp.default.includePath": [
+    "D:/Personal_Software/mingw64/include",
+    "D:/Personal_Software/mingw64/x86_64-w64-mingw32/include"],
+
        // ==========================================================================
-      // —— 补全与提示逻辑 ——C/C++ 插件功能设置和vscode自带的intellisense设置
+      // —— 补全与提示逻辑 vscode自带的intellisense设置
        // ==========================================================================
     "editor.quickSuggestions": {                 // 快速建议的启用范围
     "other": true,                             // 代码中启用补全提示
     "comments": true,                         // 注释中启用
-    "strings": false                           // 字符串中不启用
+    "strings": false                             // 字符串中不启用
     },
-    "editor.wordBasedSuggestions": "off",        // 禁用“文档内猜词”补全（避免中文/无关词干扰）
-    "editor.suggest.showReferences": false,      // 不在提示中显示“引用来源”
+    "editor.wordBasedSuggestions": "off", // 不在提示中显示“引用来源”
     "editor.inlineSuggest.enabled": true,        // 启用行内灰色小提示（AI 补全感）
-    "editor.parameterHints.enabled": true,       // 输入函数名后显示参数列表
-    "editor.suggest.snippetsPreventQuickSuggestions": false, // 允许 snippet 与普通提示共存
+    "editor.parameterHints.enabled": true, // 允许 snippet 与普通提示共存
     "editor.suggest.localityBonus": true,        // 优先推荐最近使用过的变量/函数
     "editor.acceptSuggestionOnEnter": "on",      // 按 Enter 键即可确认补全
       // ==========================================================================
@@ -97,7 +99,7 @@
    "python": "& python -u \"${fullFileName.replace('\\', '\\\\')}\"",// 使用 -u 参数以确保输出实时刷新
 
   },  
-     // =========================CodeX插件==========================================
+  // =========================CodeX插件==========================================
 
 
 
@@ -105,14 +107,14 @@
   // ========================background插件=========================================
     "background.enabled": true,
 
-    // "background.fullscreen": {
+    // "background.fullscreen": {//全屏壁纸
     //     "images": ["file:///C:/Users/Administrator/Desktop/View/海报/Yuki.jpg"],
     //     "opacity": 0.15, 
     //     "size": "cover",
     //     "position": "center"
-    // },
+    // },                                                   
       //editor  编辑器
-    "background.editor": {
+    "background.editor": {                                  
         "useFront": true,
         "style": {
             "background-position": "center",
@@ -134,8 +136,12 @@
         "images": ["file:///C:/Users/Administrator/Desktop/View/海报/nature.webp"],
         "opacity": 0.15
     },
+  // =======================下面为CodeGeex配置文件==============================
+
     "Codegeex.Privacy": true,
     "Codegeex.License": "",
+
+  // =======================下面为待整理配置文件=================================
     "[latex]": {
 
       "editor.formatOnPaste": false,
@@ -738,8 +744,13 @@
   // 【检查】: ChkTeX 参数
   // （可选）你可以在项目根目录放一个 `.chktexrc` 文件来定义检查规则。
   // 下面的参数是示例，例如 `-q` (安静模式), `-I0` (不显示欢迎信息)。
-  // "latex-workshop.linting.chktex.exec.args": ["-q", "-I0"],
-
+  // "latex-workshop.linting.chktex.exec.args": [
+  //         "-wall",   // 开启所有检查规则
+  //         "-q",      // 安静模式（可有可无）
+  //         "-n8",     // 忽略“非 ASCII 字符”警告 —— 中文字符
+  //         "-n18",    // 忽略标点前后空格这类（中文排版经常触发）
+  //         "-n30"     // 忽略标点间距相关（中文符号也会触发）
+  //   ],
   // ===================================================================
   // 八、 格式化（Formatting）
   // ===================================================================
@@ -871,5 +882,14 @@
     "*.sty": "latex",
     "*.bib": "bibtex"
   },
-  "workbench.editor.empty.hint": "hidden"
+  "workbench.editor.empty.hint": "hidden",
+  "tabnine.experimentalAutoImports": true,
+  "settingsSync.ignoredSettings": []
+
+ // ===================================================================
+  // 十三、 补丁（可选）
+  // ===================================================================
+
+
+
 }
