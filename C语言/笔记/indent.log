@@ -1,0 +1,27 @@
+INFO:  ANSI Code Page: 936
+INFO:  latexindent.exe version 3.24.4, 2024-07-18, a script to indent .tex files
+       latexindent.exe lives here: D:/Personal_Software/Tex_live/texlive/2025/bin/windows/
+       Thu Nov 13 19:52:23 2025
+       Filename: c:/Users/Administrator/Desktop/Git_Mirrors/Personal_Box/C语言/笔记/latex/chapter3/__latexindent_temp_1.tex
+INFO:  Processing switches:
+       -y|--yaml: YAML settings specified via command line
+       -c|--cruft: cruft directory
+INFO:  Directory for backup files and log file c:\Users\Administrator\Desktop\Git_Mirrors\Personal_Box\C语言\笔记\indent.log:
+       c:\Users\Administrator\Desktop\Git_Mirrors\Personal_Box\C语言\笔记\
+INFO:  YAML settings read: defaultSettings.yaml
+       Reading defaultSettings.yaml from D:/Personal_Software/Tex_live/texlive/2025/bin/windows/defaultSettings.yaml
+       Reading defaultSettings.yaml (2nd attempt) from D:/Personal_Software/Tex_live/texlive/2025/bin/windows/../../texmf-dist/scripts/latexindent/defaultSettings.yaml
+       and then, if necessary, D:/Personal_Software/Tex_live/texlive/2025/bin/windows/LatexIndent/defaultSettings.yaml
+INFO:  YAML reading settings
+       Home directory is C:\Users\Administrator
+       latexindent.pl didn't find indentconfig.yaml or .indentconfig.yaml
+       see all possible locations: https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#indentconfig-options)
+INFO:  YAML settings read: -y switch
+       YAML setting: defaultIndent:'    '
+       single-quoted string found in -y switch: '    ', substitute to     
+       Updating mainSettings with defaultIndent:     
+FATAL I couldn't find c:/Users/Administrator/Desktop/Git_Mirrors/Personal_Box/C语言/笔记/latex/chapter3/__latexindent_temp_1.tex, are you sure it exists?
+      Exiting, no indentation done.
+       --------------
+INFO:  Please direct all communication/issues to:
+        https://github.com/cmhughes/latexindent.pl

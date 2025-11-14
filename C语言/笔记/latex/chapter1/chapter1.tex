@@ -1,0 +1,145 @@
+\section{C语言程序的基本结构}
+\subsection{最小示例 \texttt{HelloWorld}}%\texttt：等宽字体显示
+\begin{lstlisting}[caption={最小 C 程序示例},label={lst:hello}]
+
+  #include <stdio.h>          // 1) 预处理指令：包含头文件
+
+int main(void) {            // 2) 主函数：程序从这里开始执行
+    printf("Hello, World!\n"); // 3) 调用库函数进行输出
+    return 0;               // 4) 返回状态码 0：正常结束
+}
+\end{lstlisting}
+
+\subsection{\#include 与头文件}
+\begin{itemize}%用于创建无序列表（项目符号列表）的环境
+  \item \texttt{\#include }：\#include是预处理指令，在编译开始
+  前，编译器会把被包含的文件内容“复制粘贴”进来。
+  \item \texttt{stdio.h} :  \texttt{stdio.h} 中定义了常用的输入输出函数
+  （如 printf, scanf）。如果事先不在预处理阶段声明定义，后续却在代码中使用了
+  stdio.h 中的函数，那么编译器就会报错。
+  \item 尖括号 \verb|<...>| 在系统路径查找；引号 \verb|"my.h"| 先在当前目录再到系统路径查找。
+\end{itemize}
+
+\subsection{\texttt{main} 函数（程序入口）}
+\begin{lstlisting}[caption={常见main函数入口示例},label={lst:simple_main}]
+int main(void)
+// 或
+int main(int argc, char *argv[])
+\end{lstlisting}
+
+\vspace{1em}%空出一行距离（当前字体高度）
+
+在 C 语言中，main() 是程序的唯一入口函数，程序的执行从这里开始。
+
+\vspace{1em}%空出一行距离（当前字体高度）
+
+
+\begin{itemize}
+  \item 接受：main函数的参数只能是 void 或命令行参数。究其原因是
+  因为main函数是由系统启动代码调用的，系统启动时，系统只知道程序名、命令行参数和环境变量。
+  
+  \item 返回值：在 C 语言标准（C99、C11、C17、C23）中明确规定，main 函数必须返回一个 int 类型
+的值，不能是 char、float、double、void 等其他类型，用来表示程序的执行状态。
+\begin{enumerate}[label=\ding{\numexpr171+\arabic*}]% 圆圈编号，自动编号为①②③…
+  \item \texttt{return 0}: 表示正常结束。
+  \item \texttt{return 非 0}: 表示异常结束，具体值可自定义以表示不同错误类型。
+\end{enumerate}
+
+\end{itemize}
+
+
+
+
+
+\subsection{语句块与分号}
+\begin{itemize}
+  \item 花括号 \verb|{ ... }| 构成语句块（复合语句），可包含声明与可执行语句。
+  \item 大多数 C 语句以分号 \texttt{;} 结尾：表达式语句、声明（含初始化）、\texttt{return} 等。
+\end{itemize}
+
+\subsection{\texttt{printf} 与常用占位符}
+\begin{lstlisting}[caption={printf 与占位符示例}]
+#include <stdio.h>
+int main(void) {
+    int a = 42; double x = 3.14159; char c = 'A';
+    printf("a=%d, x=%.2f, c=%c\n", a, x, c); // 输出 a=42, x=3.14, c=A
+    return 0;
+}
+\end{lstlisting}
+
+
+
+
+\subsection{从源代码到可执行文件：将自然语言翻译为机器语言}
+
+C 程序从源代码到可执行文件一般经历四个主要阶段：\textbf{预处理}、\textbf{编译}、\textbf{汇编} 和 \textbf{链接}。下面以 \texttt{gcc} 为例分别说明，并给出对应命令。为便于工程化，还补充多文件与库的常见用法及常见问题。
+
+\paragraph{（1）预处理（Preprocessing）}
+主要工作：展开 \#include、宏替换（\#define）、条件编译（\#if/\#ifdef 等），并去除注释，得到纯 C 源。
+\begin{verbatim}
+gcc -E hello.c -o hello.i
+\end{verbatim}
+产物：\texttt{.i} 文件（预处理后的 C 代码）。
+
+\paragraph{（2）编译（Compilation）}
+对 \texttt{.i} 做词法/语法/语义分析与优化，生成目标架构的汇编代码。
+\begin{verbatim}
+gcc -S hello.i -o hello.s      % 也可直接对 .c 使用 -S
+\end{verbatim}
+产物：\texttt{.s} 文件（汇编源码）。
+
+\paragraph{（3）汇编（Assembly）}
+把汇编转为可重定位的目标文件，包含代码段、数据段与符号表。
+\begin{verbatim}
+gcc -c hello.s -o hello.o      % 也可 gcc -c hello.c -o hello.o
+\end{verbatim}
+产物：\texttt{.o} 文件（目标文件）。
+
+\paragraph{（4）链接（Linking）}
+将若干 \texttt{.o} 与所需库合并，进行符号解析与重定位，加入启动代码，生成可执行文件（Linux 为 ELF，Windows 为 PE）。
+\begin{verbatim}
+gcc hello.o -o hello
+\end{verbatim}
+
+\paragraph{（5）装载与运行（Loading \& Running）}
+操作系统加载可执行文件到内存，先进入运行时入口 \texttt{\_start}，再调用用户的 \texttt{main()}；\texttt{main} 返回值作为进程退出码。
+
+\paragraph{（6）多文件与库的基本用法}
+\begin{verbatim}
+gcc -c main.c -o main.o
+gcc -c util.c -o util.o
+gcc main.o util.o -o app              % 链接生成可执行文件
+
+ar rcs libmylib.a foo.o bar.o         % 生成静态库
+gcc main.o -L. -lmylib -o app2        % 使用静态库（库放在对象文件之后）
+
+gcc -fPIC -c foo.c -o foo.o
+gcc -shared -o libmylib.so foo.o      % 生成共享库
+gcc main.o -L. -lmylib -o app3        % 运行时需能找到共享库
+\end{verbatim}
+
+\paragraph{（7）常见问题速查}
+\begin{itemize}
+  \item 头文件找不到：添加包含路径 \texttt{-Ipath}。
+  \item 未定义引用（\texttt{undefined reference}）：缺少对应对象文件或库，或库链接顺序在前；应将 \texttt{-lxxx} 放在使用到该库的对象文件之后。
+  \item 库找不到：添加库路径 \texttt{-Lpath}，并确认库名（\texttt{libxxx.a}/\texttt{libxxx.so} 对应 \texttt{-lxxx}）。
+  \item 位宽/架构不匹配：确认 \texttt{-m32}/\texttt{-m64} 或交叉编译器是否正确。
+\end{itemize}
+
+\paragraph{（8）嵌入式特例}
+在无操作系统的嵌入式环境中，仍有编译与链接步骤，但会使用启动文件与链接脚本生成固件映像（如 \texttt{.hex}/\texttt{.bin}），\texttt{main()} 通常为永不返回的主循环。
+
+构建流程：
+\begin{center}
+\texttt{.c 源文件}
+$\Rightarrow$ 预处理（展开 \#include/\#define）
+$\Rightarrow$ 编译（生成 \texttt{.o/.obj}）
+$\Rightarrow$ 链接（合并库与目标文件）
+$\Rightarrow$ 可执行文件
+\end{center}
+
+命令行示例（以 \texttt{gcc} 为例）：
+\begin{verbatim}
+gcc hello.c -o hello   # 生成可执行文件
+./hello                # 运行（Windows: hello.exe）
+\end{verbatim}

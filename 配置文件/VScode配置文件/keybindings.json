@@ -1,0 +1,88 @@
+// 将键绑定放在此文件中以覆盖默认值
+[
+    {
+        "key": "ctrl+shift+alt+b",
+        "command": "latex-workshop.build",
+        "when": "!config.latex-workshop.bind.altKeymap.enabled && !virtualWorkspace && editorLangId =~ /^build$|^latex$|^latex-class$|^latex-package$|^context$|^latex-expl3$|^doctex$|^rsweave$|^jlweave$|^pweave$/"
+    },
+    {
+        "key": "ctrl+alt+b",
+        "command": "-latex-workshop.build",
+        "when": "!config.latex-workshop.bind.altKeymap.enabled && !virtualWorkspace && editorLangId =~ /^build$|^latex$|^latex-class$|^latex-package$|^context$|^latex-expl3$|^doctex$|^rsweave$|^jlweave$|^pweave$/"
+    },
+    {
+        "key": "ctrl+shift+b",
+        "command": "latex-workshop.build",
+        "when": "config.latex-workshop.bind.altKeymap.enabled && !virtualWorkspace && editorLangId =~ /^bibtex$|^latex$|^latex-class$|^latex-package$|^context$|^latex-expl3$|^doctex$|^rsweave$|^jlweave$|^pweave$/"
+    },
+    {
+        "key": "ctrl+l alt+b",
+        "command": "-latex-workshop.build",
+        "when": "config.latex-workshop.bind.altKeymap.enabled && !virtualWorkspace && editorLangId =~ /^bibtex$|^latex$|^latex-class$|^latex-package$|^context$|^latex-expl3$|^doctex$|^rsweave$|^jlweave$|^pweave$/"
+    },
+    {
+        "key": "ctrl+shift+i",
+        "command": "codegeex.inlineChat.input",
+        "when": "editorFocus && !codegeex.enableLocalMode && !editorReadonly && !enableLocalMode"
+    },
+    {
+        "key": "ctrl+i",
+        "command": "-codegeex.inlineChat.input",
+        "when": "editorFocus && !codegeex.enableLocalMode && !editorReadonly && !enableLocalMode"
+    },
+    {
+        "key": "ctrl+shift+numpad_subtract",
+        "command": "github.copilot.chat.review.stagedFileChange"
+    },
+    {
+        "key": "ctrl+i",
+        "command": "-search.action.searchWithAI",
+        "when": "hasAIResultProviderKey && searchViewletFocus"
+    },
+    {
+        "key": "ctrl+i",
+        "command": "-inlineChat.startWithCurrentLine",
+        "when": "inlineChatHasProvider && inlineChatShowingHint && !editorReadonly && !inlineChatVisible"
+    },
+    {
+        "key": "ctrl+i",
+        "command": "-workbench.action.chat.startVoiceChat",
+        "when": "chatIsEnabled && hasSpeechProvider && inChatInput && !chatSessionRequestInProgress && !editorFocus && !notebookEditorFocused && !scopedVoiceChatGettingReady && !speechToTextInProgress || chatIsEnabled && hasSpeechProvider && inlineChatFocused && !chatSessionRequestInProgress && !editorFocus && !notebookEditorFocused && !scopedVoiceChatGettingReady && !speechToTextInProgress"
+    },
+    {
+        "key": "ctrl+i",
+        "command": "-workbench.action.chat.stopListeningAndSubmit",
+        "when": "inChatInput && voiceChatInProgress && scopedVoiceChatInProgress == 'editor' || inChatInput && voiceChatInProgress && scopedVoiceChatInProgress == 'inline' || inChatInput && voiceChatInProgress && scopedVoiceChatInProgress == 'quick' || inChatInput && voiceChatInProgress && scopedVoiceChatInProgress == 'view' || inlineChatFocused && voiceChatInProgress && scopedVoiceChatInProgress == 'editor' || inlineChatFocused && voiceChatInProgress && scopedVoiceChatInProgress == 'inline' || inlineChatFocused && voiceChatInProgress && scopedVoiceChatInProgress == 'quick' || inlineChatFocused && voiceChatInProgress && scopedVoiceChatInProgress == 'view'"
+    },
+    {
+        "key": "ctrl+i",
+        "command": "-inlineChat.start",
+        "when": "editorFocus && inlineChatHasEditsAgent && inlineChatPossible && !editorReadonly && !editorSimpleInput || editorFocus && inlineChatHasProvider && inlineChatPossible && !editorReadonly && !editorSimpleInput"
+    },
+    {
+        "key": "ctrl+i",
+        "command": "-inlineChat2.close",
+        "when": "inlineChatHasEditsAgent && inlineChatVisible && !chatEdits.isRequestInProgress && chatEdits.requestCount == '0' || inlineChatHasEditsAgent && inlineChatVisible && !chatEdits.hasEditorModifications && !chatEdits.isRequestInProgress && chatEdits.requestCount == '0'"
+    },
+    {
+        "key": "ctrl+i",
+        "command": "-inlineChat2.reveal",
+        "when": "inlineChatHasEditsAgent && !chatEdits.isGlobalEditingSession && chatEdits.requestCount >= 1"
+    },
+    {
+        "key": "ctrl+i",
+        "command": "-settings.action.toggleAiSearch",
+        "when": "aiSettingResultsAvailable && inSettingsEditor"
+    },
+    {
+        "key": "ctrl+i",
+        "command": "-workbench.action.terminal.chat.start",
+        "when": "chatIsEnabled && terminalChatAgentRegistered && terminalFocusInAny && terminalHasBeenCreated || chatIsEnabled && terminalChatAgentRegistered && terminalFocusInAny && terminalProcessSupported"
+    },
+    {
+        "key": "ctrl+i",
+        "command": "chatgpt.implementTodo",
+        "when": "editorTextFocus "
+
+    }
+]

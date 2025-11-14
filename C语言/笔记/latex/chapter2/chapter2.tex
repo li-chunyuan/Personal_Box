@@ -1,0 +1,300 @@
+\section{C语言的变量与常量}
+
+\subsection{变量与常量的基本定义}
+
+\subsubsection{变量}
+
+变量（Variable）是程序在运行过程中用于存储数据的命名空间。
+每个变量在内存中都有一个存储单元，用于保存值，其内容可以在
+程序执行过程中改变。你可以把它暂时理解为一个装满数据的容器或者
+是一个可以住人的房间。例如：
+
+\begin{lstlisting}[language=C,caption={变量声明示例},label={lst:variables}]
+int a = 10;
+float b = 3.14;
+char c = 'A';
+\end{lstlisting}
+\vspace{1em}%空出一行距离（当前字体高度）
+
+\subsubsection{常量}
+在C语言程序设计中，常量（Constant）是指程序在
+运行过程中，其值不可改变的量。合理地定义常量可以提升
+代码的可读性和可维护性。
+本文对比三种常用常量定义方式：\texttt{\#define} 宏常量、
+\texttt{const} 常量
+与 \texttt{enum} 枚举常量，并给出实践建议。
+
+\newpage
+
+\begin{enumerate}[label={(\arabic*)}]
+\item 符号常量\texttt{\#define} 
+
+\texttt{\#define} 在预处理阶段进行\emph{文本替换}，指定用一个
+符号名称来代替一个常量。它不参与
+类型检查，也不分配存储空间。适合表达编译
+期已知且简单的固定值。
+
+\begin{lstlisting}[language=C,caption={使用 \#define 定义宏常量},label={lst:define}]
+#include <stdio.h>
+
+#define PI 3.14       //经过指定后，本文件中所有PI都会被替换为3.14。
+#define AREA(r) (PI * (r) * (r))      //定义函数宏，用于计算圆面积。
+
+int main() {
+    float r = 2.0;
+    printf("Area = %.2f\n", AREA(r));
+    return 0;
+}       //简单理解：只是个文本替换而已。
+
+\end{lstlisting}
+
+在程序编译之前，预处理器会将代码中的
+所有 \texttt{PI} 替换为3.14，所有 \texttt{AREA(r)}
+ 替换为(3.14 * (r) * (r))。
+
+\item 常变量\texttt{const}  
+   
+\texttt{const}是 C 语言中的一个关键字，
+表示“只读（只可读，不可改）”。
+它可以用来修饰变量、指针、函数参数等，
+使其在程序运行过程中不可被修改。
+
+常变量具有类型信息，占用内存空间，只是其值
+不可通过该标识符修改。适合表达接口常量、配置值等。
+
+\begin{lstlisting}[language=C,caption={使用 const 定
+  义常量变量},label={lst:const}]
+#include <stdio.h>
+
+const int   MAX_CONN = 1024;
+const float PI       = 3.14159f;
+
+int main(void) {
+    MAX_CONN = 2048; //  编译报错：只读对象不可修改
+    printf("%f\n", PI);
+    return 0;
+}
+\end{lstlisting}
+
+\newpage
+要注意一件事情:修饰一个变量，只是使其在语义上为“只读”。
+
+
+也就是说编译器虽然会禁止通过该常变量名字修改，但并
+不保证存储区域物理上不可修改。\texttt{const} 变量
+仍然占内存，只是不可通过其标识符修改。
+
+
+
+\item \texttt{enum} 枚举常量
+
+\texttt{enum} 定义一组自定义的\emph{整数常量}，
+往往是一组有着共同特性的数据集合或是状态标签。这里
+在展开讨论这一常量之前，先讲解一下枚举的概念。
+
+\vspace{1em}%空出一行距离（当前字体高度）
+
+\noindent\textbf{枚举}
+
+枚举（Enumeration）是一种用户自定义的数据
+类型，它由一组自定义标签的整数常量组成。每个枚举成员都
+对应一个整数值（可以为负数），默认情况下，从 0 开始递增，也可以手动
+指定起始值或各个具体值。枚举的主要目的是为了提高代码的可
+读性和可维护性。
+
+比如春夏秋冬这四个数据就是一组枚举数据，
+它们可以用一个枚举类型来表示；再比如生活中的通讯录，就是
+一个非常典型的枚举数据，如\autoref{fig:Contacts} 所示。
+
+\vspace{1em}%空出一行距离（当前字体高度）
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figures/通讯录.jpeg}
+  \caption{生活中的枚举数据：通讯录}
+  \label{fig:Contacts}
+\end{figure}
+
+
+电话号码11位数字，按道理来说，一共有 $10^{11}$ 种可能性，
+但实际上，我们的通讯录中并不会存入这么多电话号码，
+而是只会有其中离散的一部分，比如你亲人
+、朋友、同事的号码。此时当我们需要拨打电话时，只能
+从通讯录这几个离散的数据里面挑选。
+
+\newpage
+
+枚举的基本规则如\autoref{lst:enum basic}所示
+
+
+\begin{lstlisting}[language=C,caption={使用 enum 基本规则},label={lst:enum basic}]
+enum Color  { RED, GREEN, BLUE };        
+// 数值若不自定义，则依次为 0,1,2
+enum Weekday{ MON=1, TUE, WED, THU, FRI, SAT, SUN }; 
+//若自定义了起始值，则后续依次递增1
+enum State { ST_INIT=-5, ST_RUN=8, ST_ERR=9, ST_STOP=100 };
+//也可自定义每个枚举值
+
+//注意：枚举数据可以为负数，但必须为整数。
+\end{lstlisting}
+
+说完了基本规则，让我们来探讨一下枚举类型变量使用方法，
+让我们通过一个示例来加深理解。
+
+\begin{lstlisting}[language=C,caption={使用 enum 定义变量},label={lst:enum var}]
+#include <stdio.h>
+
+enum Color { RED, GREEN, BLUE }x;  // 定义枚举类型 Color 并声明变量 x
+
+
+enum Weekday { MON, TUE, WED, THU, FRI, SAT, SUN };
+enum Weekday this_month;  // 声明枚举类型 Weekday 变量 this_month
+//这与上面Color的声明方式是等价的。
+
+int main(void) {
+    x = RED;  // 给枚举变量 x 赋值  //枚举变量的赋值只能在枚举成员中选择
+    this_month = TUE;  // 给枚举变量 this_month 赋值
+    printf("Color: %d, Weekday: %d\n", x, this_month);
+
+    return 0;
+}
+\end{lstlisting}
+
+在上面的示例中，我们定义了两个枚举类型，相信大家已经理解了枚举的
+基本用法。接下来我们来接着探讨enum的常量特性。
+
+\texttt{enum}常量是编译期符号，它不同于\texttt{const}常量，也不同于
+\texttt{\#define}宏常量在预处理阶段就进行文本替换。
+enum常量在编译期被替换为对应的整数值，
+不占用任何内存空间，且只能表示整数类型。枚举变量一旦被声明之后
+，其值只能在枚举成员中选择，不能赋予其他整数值。这一安全特性使得
+枚举常量非常适合表示离散的状态或类别，可以有效提高代码的安全性和可读性。
+
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\noindent%取消首行缩进
+\subsection{命名规则与规范}
+\subsubsection{命名规则}
+对于字符的组成，变量和常量遵循相同的规则。变量名只能由字母、数字和下划线组成，且首字符不能为
+    数字（虽然语法上允许首字符为 \_ ，但在实际编程和标准库约定中有一些潜在风险）
+\begin{itemize}
+    \item 区分大小写，如 \texttt{age} 与 \texttt{Age} 是不同变量；
+    \item 不得与关键字（\texttt{int}, \texttt{return} 等）同名；
+\end{itemize}
+\subsubsection{代码命名规范}
+
+\begin{enumerate}[label={（\arabic*）}] % 括号编号，使用中文括号编号
+  \item 变量命名规范：变量命名通常使用小写字母和下划
+  线(例如 \texttt{total\_count})，或者在某些语言中使用驼峰
+  式命名。（例如\texttt{totalCount} ）
+  \item 常量命名规范:
+  常量通常采用全大写字母，单词之间用下划线分
+  隔。这是为了让开发者在看到常量时，能够立刻
+  识别它们是固定值，而不是可变的数据。
+  例如：\texttt{MAX\_SIZE}、\texttt{PI}、\texttt{BUFFER\_LIMIT}。  
+\end{enumerate}
+
+
+  这种约定使得代码更加一致，并且提高了可读性和维护性。
+
+
+\vspace{1em}%空出一行距离（当前字体高度）
+\noindent
+\subsection{作用域与生命周期}
+
+\subsubsection{变量}
+
+\begin{enumerate}[label={（\arabic*）}] % 括号编号，使用中文括号编号
+  \item 局部变量：定义在函数或语句块中，仅在该范围内有效。每次进入函数时该变量都会被
+    重新创建并初始化，生命周期仅限于函数调用期间。当函数或语句块执
+    行结束后，变量随即被销毁，内存空间被回收；
+  \item 全局变量：定义在所有函数外部，全文件范围内可访问。其生命周
+    期从程序开始运行到程序结束，在此期间始终占据固定的内存空间。
+    全局变量可被同一文件内的所有函数访问（若需跨文件访问，可使用 extern 声明）。
+  \item 静态变量（\texttt{static}）：使用关键字 static 声明。
+它的作用域视其属于局部变量还是全局变量而定，但其生命周期贯穿整个程序执行过程。
+
+
+也就是说，即使该变量为在函数或语句块中定义的局部变量，其在函数调用结束后也不会被销毁，而是保留其上一次的值；
+下次进入函数时会继续使用原来的值，而不是重新初始化。
+\end{enumerate}
+\clearpage
+
+
+\vspace{1em}%空出一行距离（当前字体高度）
+\noindent%取消首行缩进
+\textbf{示例}
+\begin{lstlisting}[language=C,caption={局部变量与静态局部变量示例},label={lst:foo_static}]
+void foo() {
+    int x = 0;           // 局部变量
+    static int y = 0;    // 静态局部变量
+    x++;
+    y++;
+    printf("x=%d, y=%d\n", x, y);
+}
+\end{lstlisting}
+
+\vspace{1em}%空出一行距离（当前字体高度）
+\vspace{1em}%空出一行距离（当前字体高度）
+\vspace{1em}%空出一行距离（当前字体高度）
+
+\noindent
+连续调用 \texttt{foo()} 三次的输出为：
+
+\begin{verbatim}
+                              x=1, y=1
+                              x=1, y=2
+                              x=1, y=3
+\end{verbatim}
+
+
+
+由于局部变量在函数调用时被创建，并在函数结束后自动销毁，因此每次进
+入函数时，x 都会重新初始化为 1。而静态局部变量 y 的生命周期贯穿整个
+程序运行过程，因此它的值在每次函数调用后都会保留并继续增加。
+
+
+\subsubsection{常量}
+
+\begin{enumerate}[label={（\arabic*）}] % 括号编号，使用中文括号编号
+  \item 局部常量：当常量在函数内部使用 \texttt{const} 声
+  明时，它的作用域仅限于该函数或代码块。这样的常量在函数调用结束后被销毁；
+  \item 全局常量：当常量在函数内部使用 const 声
+  明时，它的作用域仅限于该函数或代码块。这样的常量在函数调用结束后被销毁。
+    全局变量可被同一文件内的所有函数访问（若需跨文件访问，可使用 extern 声明）。
+  \item 静态常量（\texttt{static}）：与前面静态变量相似，如果常量声明为 static，它
+  的生命周期会贯穿整个程序运行期间，即使它的作用域限于声明的文件或函数。
+\end{enumerate}
+
+
+
+
+
+
