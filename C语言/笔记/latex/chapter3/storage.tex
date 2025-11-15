@@ -1,0 +1,498 @@
+\newpage
+\section{数据类型}
+\subsection{计算机与数学}
+
+
+在数学世界里，我们习惯于假定：
+
+\begin{itemize}
+  \item 整数可以无限大、无限小；运算可以无限次进行，而不会"装不下"。
+  \item 小数可以具有无限精度，如 $\pi$；
+  \item 数值的运算是绝对准确的，例如：78与97之和为175，1/3的值是0.33333333……（循环小数）。
+\end{itemize}
+
+数学是一门研究抽象问题的学科，数和数的运算都是抽象的。而在计算机中，数据是存放在存储单元中的，
+它是具体存在的。而且，存储单元是由有限的字节
+构成的，每一个存储单元中
+存放数据的范围是有限的，不可能存放“无穷大”的数，
+也不能存放循环小数。
+
+所以在真实的计算机系统中，造成这些都不成立的根本原因是\textbf{硬件资源是有限的}：
+
+\begin{itemize}
+  \item 内存容量有限，只能分配有限数量的比特来表示一个值；
+  \item 寄存器宽度有限，例如常见 CPU 的通用寄存器是 32 位或 64 位；
+  \item 加法器、乘法器等算术单元只能处理固定位宽的输入；
+\end{itemize}
+
+例如用C程序计算和输出1/3：
+程序\texttt{printf("\%f" , 1.0/3.0);}
+得到的结果是0.333333，只能得到6位小数，而不是无穷位的小数。
+
+因此，如果想要"无限精度"整数或小数，就只能通过\textbf{软件模拟}来实现（例如 Python 的大整数、GMP 等库），而非依赖硬件原生支持。
+
+从这个角度看，\textbf{数据类型本质上就是在有限资源约束下，对数学世界做出的一个妥协方案}：不同类型对应不同的位宽、不同的范围、不同的精度以及不同的运算规则。数据类型不是单纯用来帮助程序员分类数据的标签，而是\textbf{对内存中比特模式的一种解释方式}。
+\newpage
+
+\subsection{数据类型的本质：对比特模式的解释}
+
+计算机的底层存储介质只认识 \texttt{0} 和 \texttt{1}。数据是具体存在的，存放在存储单元中。例如，下面这 4 个字节的二进制内容（为了阅读方便，用空格分组）：
+
+\begin{lstlisting}[language={}]
+0100 0001 0100 0010 0100 0011 0100 0100
+\end{lstlisting}
+
+在不同语境下，它可能表示完全不同的东西：
+
+\begin{table}[H]
+  \centering
+  \caption{同一比特模式在不同类型解释下的含义示例}\label{tab:datatype}
+  \begin{tabular}{ll}
+    \toprule
+    解释方式 & 含义 \\
+    \midrule
+    \texttt{char[4]}      & 字符串 \texttt{"ABCD"} \\
+    \texttt{int32\_t}     & 一个 32 位有符号整数（某个十进制值） \\
+    \texttt{uint32\_t}    & 一个 32 位无符号整数（更大的十进制值） \\
+    \texttt{float}        & 一个 IEEE~754 单精度浮点数 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+需要注意的是：\textbf{比特本身并没有变化，变化的只是"如何解释这些比特"的规则}，也就是数据类型。
+
+这意味着：
+
+\begin{itemize}
+  \item \textbf{没有类型就没有意义}：底层的0和1无法自动告诉计算机"我是哪种数据"；
+  \item \textbf{编译器必须依赖类型}来决定存储方式、对齐方式，以及在表达式中使用什么样的运算规则。
+\end{itemize}
+
+换句话说，类型是 CPU 与编译器之间关于"这些比特该怎么看、怎么算"的协议。因此，在计算机中，数据必须有类型，不同类型的数据在存储单元中所占的字节数不同，表示的数据范围也不同，数据的运算规则也不同。
+
+理解数据类型的本质，是写好 C 语言以及其他底层语言的根基。
+
+\newpage
+
+\subsection{数据类型决定存储格式与运算规则}
+
+数据类型并不是一个“仅供人参考的标签”，它直接决定两件事，存储格式和运算规则。
+
+\subsubsection{存储格式（Representation）}
+
+类型会决定：
+
+\begin{itemize}
+  \item 占用的字节数（例如典型平台上 \texttt{int} 为 4 字节、\texttt{char} 为 1 字节）；
+  \item 在内存中的实际布局，以及是否需要对齐；
+  \item 是否有符号（\texttt{signed} vs \texttt{unsigned}）；
+  \item 对于浮点数，如何拆分为符号位、阶码和尾数（IEEE~754）。
+\end{itemize}
+
+\subsubsection{运算规则（Operations）}
+
+类型还会决定表达式计算时的具体运算规则：
+
+\begin{itemize}
+  \item 使用整数加法器还是浮点运算单元（FPU）；
+  \item 是按补码规则进行加减，还是作为无符号数做模 $2^n$ 运算；
+  \item 运算结果是否可能溢出，溢出之后会发生什么；
+  \item 表达式中不同类型之间如何进行\emph{整型提升}和\emph{通常算术转换}。
+\end{itemize}
+
+例如下面这个 C 代码片段：
+
+\begin{lstlisting}
+char a = 100;
+char b = 100;
+char c = a + b; 
+
+printf("%c\n", c);      //结果为�
+printf("%d",c);         //结果为-56
+\end{lstlisting}
+
+在表达式 \texttt{a + b} 中，\texttt{a} 和 \texttt{b} 会
+先被\emph{整型提升}为 \texttt{int}，实际以 \texttt{int} 进行运算。
+但最终赋值给 \texttt{char c} 时，会发生\emph{截断}：只保留结果的低 8 位，
+从而可能得到和数学直觉完全不同的值。
+
+因此，\textbf{理解类型对于“值是如何被存储和计算的”至关重要}。
+
+\newpage
+
+\subsection{有限位宽带来的问题：溢出、截断与精度损失}
+
+由于类型对应的位宽是有限的，必然会带来一系列问题，最典型的包括：
+
+\subsubsection{整数溢出（Integer Overflow）}
+
+
+计算机中的整数类型具有固定的位数，例如：
+
+\begin{table}[h!]
+  \centering
+  \caption{常见整数类型的位数与表示范围}\label{tab:integer-types}
+  \begin{tabular}{ccc}
+    \toprule
+    \textbf{类型} & \textbf{位数（一般情况）} & \textbf{可表示范围} \\
+    \midrule
+    \verb|short|        & 16 & $-32768$ $\sim$ $+32767$ \\
+    \verb|int|          & 32 & $-2^{31}$ $\sim$ $2^{31}-1$ \\
+    \verb|unsigned int| & 32 & 0 $\sim$ $2^{32}-1$ \\
+    \verb|long|         & 32/64 & $-2^{31}$ $\sim$ $2^{31}-1$ (或 $-2^{63}$ $\sim$ $2^{63}-1$) \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+若表达式的结果超过了该类型所能表示的范围，就会发生 \textbf{整数溢出（Integer Overflow）}。
+
+
+\noindent\textbf{(1)~无符号整数溢出：定义良好（Well-defined）}\par\vspace{0.5em}
+
+
+以 \verb|unsigned int| 为例，它只能存储 $0 \sim 4294967295$（即 $0 \sim 2^{32}-1$）。
+当执行：
+
+\begin{lstlisting}[language=C]
+unsigned int x = 4294967295;
+x = x + 1;
+\end{lstlisting}
+
+其二进制加法为：
+\[
+11111111111111111111111111111111_2 + 1 = \textcolor{red}{1}\,00000000000000000000000000000000_2
+\]
+
+由于只有 32 位，最高位溢出被丢弃,剩下：
+
+\[
+00000000000000000000000000000000_2 = 0
+\]
+
+因此：
+
+\[
+4294967295 + 1 \equiv 0 \pmod{2^{32}}
+\]
+
+也就是说执行下面的代码，得到的结果为0。
+
+\begin{lstlisting}[language=C]
+unsigned int x = 4294967295;
+printf("%u\n", x + 1);
+\end{lstlisting}
+
+
+
+\newpage
+
+\noindent\textbf{(2)~有符号整数溢出}\par\vspace{0.5em}
+
+以 \verb|int| 为例，在 32 位系统中其范围为 $-2^{31} \sim 2^{31}-1$（即 $-2147483648 \sim 2147483647$）。
+
+当执行：
+
+\begin{lstlisting}[language=C]
+int x = 2147483647;
+printf("%d\n", x + 1);
+\end{lstlisting}
+
+其二进制补码加法为：
+\[
+01111111111111111111111111111111_2 + 1 = 10000000000000000000000000000000_2
+\]
+
+该值按补码解释为 $-2147483648$。
+
+这也就是为什么上面的代码执行之后的结果为-2147483648
+
+
+\vspace{0.8em}
+\noindent\textbf{(3)~图解整数溢出原理}\par\vspace{0.5em}
+
+如\autoref{fig:integer-overflow} 所示，下图展示了整数溢出的原理。
+当无符号整数超过其最大值时，会回绕到0；而有符号整数溢出时，
+则会从最大正数翻转为最小负数，这与补码的存储方式直接相关。
+
+
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[b]{0.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/无符号整数溢出.png}
+    \caption{无符号整数溢出示意图}
+    \label{fig:unsigned-overflow}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/有符号整数.png}
+    \caption{有符号整数溢出示意图}
+    \label{fig:signed-overflow}
+  \end{subfigure}
+  \caption{整数溢出示意图}
+  \label{fig:integer-overflow}
+\end{figure}
+
+\clearpage
+
+
+
+
+
+
+\vspace{0.8em}
+\noindent\textbf{(3)~无符号溢出和有符号溢出的区别}\par\vspace{0.5em}
+
+
+
+
+在讨论溢出行为之前，可以先给出一个简单而关键的论断：
+
+\begin{quote}
+\textbf{无符号整数的溢出是标准规定的确定行为；有符号整数的溢出是标准未规定的未定义行为。
+所以不能完全保证符合预期输出}
+\end{quote}
+
+\vspace{1em}
+
+在 C 语言中，有符号整数与无符号整数在发生溢出时具有本质上的区别。
+首先，无符号整数（\verb|unsigned|）的溢出属于标准规定的行为。
+C 标准明确要求无符号整数采用模 $2^n$ 算术，其中 $n$ 为类型的比特宽度。
+也就是说，无符号整数的取值范围始终保持在 $[0,\, 2^n-1]$ 之间，
+并在超过最大值时按模 $2^n$ 回绕。
+例如，一个 32 位的 \verb|unsigned int| 的最大值为 \verb|0xFFFFFFFF|；
+当其再加~1 时，其结果将变为 \verb|0x00000000|。
+这种行为在不同的平台、编译器和优化等级下均完全一致，
+因此被称为定义良好的行为（well-defined behavior）。
+
+\vspace{1em}
+
+\noindent\textbf{无符号溢出的“环结构”}\par\vspace{0.5em}
+
+以 8 位无符号整数为例：
+
+\[
+0 \rightarrow 1 \rightarrow \cdots \rightarrow 254 \rightarrow 255 \rightarrow 0 \rightarrow \cdots
+\]
+
+整数在 $0 \sim 255$ 之间构成一个模 256 的环。
+\\
+
+与此不同的是，有符号整数（如 \verb|int|、\verb|long| 等）
+的溢出属于未定义行为（Undefined Behavior, UB）。所谓未定义行为，
+并不是指结果随机，而是 C 标准根本不对溢出之后的结果给出任何保证。
+编译器在遇到可能导致有符号整数溢出的代码时有完全的自由：它可以产生某个具体值，
+也可以忽略该表达式，甚至可以在优化阶段假定溢出永远不会发生，从而删除某些看似可执行
+的代码路径。
+
+出现这种设计的原因，一方面是因为历史上不同处理器使用不同的整数表示方式
+（如补码、反码和符号-幅度），导致其溢出行为并不一致；另一方面，将其定义为未定义行为
+可以让编译器进行更激进的优化，例如认为 $i+1 > i$ 永远成立。
+
+综上所述，无符号整数的溢出是可预测且具有标准保证的，而有符号整数的溢出则是不受标准约束、具有潜在不可预测性的行为。在实际编程中，应避免任何可能导致有符号整数溢出的情况，否则程序的语义可能会偏离标准规定，并引入难以察觉的错误。
+
+\vspace{1em}
+\noindent\textbf{简要比较}\par\vspace{0.5em}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+类型 & 溢出行为 & 标准规定 & 后果 \\ \hline
+\verb|unsigned| & 模 $2^n$ 回绕 & 定义良好 & 可预测、可依赖 \\ \hline
+\verb|signed| & 无标准规定 & 未定义行为（UB） & 不可预测、不可依赖 \\ \hline
+\end{tabular}
+\end{center}
+
+
+\subsubsection{浮点精度损失（Floating-Point Precision Loss）}
+
+浮点数使用有限数量的比特来同时表示范围与精度。很多十进制小数在二进制中是\emph{无法精确表示}的，例如 $0.1$。因此，在实践中你常常会遇到：
+
+\[
+0.1 + 0.2 \neq 0.3
+\]
+
+这不是计算机“算错了”，而是因为 \texttt{0.1}、\texttt{0.2} 和 \texttt{0.3} 都是以近似值存储，近似值之间的运算不再满足我们在实数域中的直觉。
+
+\subsubsection{截断（Truncation）}
+
+当将一个“位宽较大的类型”赋值给“位宽较小的类型”时，会发生截断：直接丢弃高位，只保留低位。例如：
+
+\begin{lstlisting}
+int x = 1000;
+char y = x;   // 截断为低 8 位
+\end{lstlisting}
+
+若不理解这个过程，很容易在类型转换或结构体内存布局中引入难以察觉的 Bug。
+
+\subsubsection{混合类型与隐式转换}
+
+再看一个常见的“惊喜”示例：
+
+\begin{lstlisting}
+unsigned int a = 1;
+int b = -2;
+printf("%u\n", a + b);
+\end{lstlisting}
+
+在这个表达式中，\texttt{a} 是无符号整数、\texttt{b} 是有符号整数。根据 C 语言的\emph{通常算术转换}规则，\texttt{b} 会被转换为无符号类型，然后再参与运算，最终得到一个非常“反直觉”的巨大无符号数。
+
+这些细节都与“数据类型如何被解释和提升”紧密关联。
+
+\subsection{小结}
+
+本节可以归纳为以下几点：
+
+\begin{itemize}
+  \item 在计算机里，\textbf{数据类型的本质是对内存中比特模式的一种解释方式}；
+  \item 类型决定了值的\emph{存储格式}（占多少字节、如何布局、是否有符号）以及\emph{运算规则}（使用哪种算术单元、是否回绕、如何提升和转换）；
+  \item 硬件资源有限，决定了我们不可能进行“无限精度的数学运算”，从而不可避免地引入溢出、截断和精度损失等问题；
+  \item 理解数据类型，是理解后续补码、字节序、整型提升、浮点误差等全部内容的基础。
+\end{itemize}
+
+从工程实践的角度看，\textbf{类型不是语法装饰，而是程序正确性和可移植性的基石}。只有真正搞懂“类型到底在替我们做什么”，才能在 C 语言中写出既高效又可靠的代码。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+因此，在计算机中，数据必须有类型，
+不同类型的数据在存储单元中所占的字节数不同，
+表示的数据范围也不同，数据的运算规则也不同。
+在展开讨论C语言的数据类型之前，我们先深入了解
+一下整数与浮点数的存储原理。
+
+\subsection{整数的存储与表示}
+
+加法和减法是计算机中最基本的运算，计算机
+时时刻刻都离不开它们，所以它们由硬件直接支持。
+与此同时，早期计算机电路为了提高加减法的运算效率，
+硬件电路需要设计得尽量简单，可是这样一来减法电路
+就势必要被阉割掉，因为减法电路的设计要比加法复杂得多。
+因此困扰早期计算机设计者的一个重要问题开始浮现：
+
+\vspace{1em}%空出一行距离（当前字体高度）
+
+\indent\textbf{如何用加法电路来实现减法运算？}
+
+\vspace{1em}%空出一行距离（当前字体高度）
+
+要想要实现减法效果，实际上就是在思考怎样才能得到数字0。如果说
+a+b=0，那么b就等于-a。此时的b也就是我们想要的减法效果
+。显然，从纯数学的角度来说，这个问题是无解的，因为不可能
+有两个正数相加等于0。但是不要忘了这里不是纯粹的数学世界，我们发现计算机的
+物理电路还有一个重要的特性：\textbf{加法器的自然进位溢出}。
+换而言之，我们可以通过一直加，直到数字溢出回到0，从而实现
+减法的效果。
+
+\vspace{1em}%空出一行距离（当前字体高度）
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.4\linewidth]{figures/加法器.png}
+  \caption{加法器}
+  \label{fig:Adder}
+\end{figure}
+
+\newpage
+
+
+这就好比一个时钟，如\autoref{fig:Clock}所示，时钟的时针此时
+指向5点钟，如果我们想让这个时钟归0（也就是指向12点钟）。那么
+一共有两种办法，一种是逆时针转动5个小时（这其实就是对应了负数），
+另一种是顺时针转动7个小时（而这就是加法溢出）。
+
+
+
+
+
+\vspace{1em}%空出一行距离（当前字体高度）
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.4\linewidth]{figures/时钟.png}
+  \caption{时钟}
+  \label{fig:Clock}
+\end{figure}
+
+\indent\textbf{原码反码补码}
+
+\vspace{1em}%空出一行距离（当前字体高度）
+
+了解完以上原理，我们就可以引出整数的存储表示方法了。
+在计算机中，整数使用\textbf{补码}来表示。补码的
+出现，彻底解决了计算机中加减法运算的问题。从此
+计算机不再关注数字的正负，而只需要关注数字的二进制位
+即可。这样一来，计算机的加法器就可以直接进行加减法运算。
+
+
+\begin{enumerate}[label=\ding{\numexpr171+\arabic*}] % 括号编号，使用中文括号编号
+  \item 原码：最高位为符号位，0表示正数，1表示负数。其余位表示数值的大小。
+  \item 反码：正数的反码与原码相同，负数的反码是将原码中除符号位外，其他位取反。
+  \item 补码：正数的补码与原码相同，负数的补码是将反码加1。
+\end{enumerate}
+
+\vspace{1em}%空出一行距离（当前字体高度）
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.4\linewidth]{figures/原码反码补码.jpg}
+  \caption{原码、反码与补码的表示}
+  \label{fig:complement}
+
+\end{figure}
+
+
+\newpage
+
+
+
+
+\newpage
+
+
+
+C语言的数据类型系统为所有数据（无论变量或常量）提供
+统一的分类标准，包括：
+
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figures/C语言数据类型.jpeg}
+  \caption{C语言数据类型（典型字节数）}
+  \label{fig:nature}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+

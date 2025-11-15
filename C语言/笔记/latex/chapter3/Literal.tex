@@ -1,6 +1,6 @@
 \section{从字面量（Literal）到数据类型}
 
-\subsection{何为魔法数字？}
+\subsection{何为魔法数字？}%有代码
 首先来解释一下什么是字面量。在C语言中，字面量指的是
 直接出现在源代码中的常量值，无需标识符即可使用。说得
 大白话一点，就是代码中一个又一个数据。如\autoref{lst:literal}
@@ -126,10 +126,6 @@ C 语言里面通过“前缀（\texttt{prefix}）”和“后缀（\texttt{suff
 \begin{tabular}{cccc}
 \hline
 后缀 & 类型 & 示例 & 中文含义 \\ \hline
-\verb|s| / \verb|S| & short int & \verb|123S| & 短整型 \\
-
-\verb|us| / \verb|US| & unsigned short int & \verb|123US|, \verb|123SU| & 无符号短整型 \\
-
 (无后缀) & int & \verb|123| & 整型（默认类型） \\
 
 \verb|u| / \verb|U| & unsigned int & \verb|123U| & 无符号整型 \\
@@ -154,17 +150,15 @@ C 语言里面通过“前缀（\texttt{prefix}）”和“后缀（\texttt{suff
 
 
 \begin{lstlisting}[language=C,caption={后缀示例},label={lst:int-suffix}]
-123S       // short int                 -32768 ～ 32767
-123US      // unsigned short int        0 ～ 65535
 
 123        // int (默认类型)             -2147483648 ～ 2147483647 (32位系统)
 123U       // unsigned int              0 ～ 4294967295
 
 123L       // long int                  -2147483648 ～ 2147483647 (32位系统)
-123UL      // unsigned long int         0 ～ 4294967295 (32位系统)
+123LU      // unsigned long int         0 ～ 4294967295 (32位系统)
 
 123LL      // long long int         -9223372036854775808 ～ 9223372036854775807
-123ULL     // unsigned long long int    0 ～ 18446744073709551615
+123LLU     // unsigned long long int    0 ～ 18446744073709551615
 
   
 //以上给出的数据范围基于常见的32位和64位系统，
@@ -179,11 +173,11 @@ C 语言里面通过“前缀（\texttt{prefix}）”和“后缀（\texttt{suff
 但在 printf 格式字符串中：必须用 \%llu，不能用 \%ull。所以我推荐大家统一
 记忆llu。
 
+\newpage
 
 
 
-
-\subsubsection{浮点数：无前缀（Prefix 不可用）}
+\subsubsection{浮点数：无前缀（Prefix 不可用）}%有假标题
 
 浮点数\textbf{不能使用前缀} 来表示进制，不能像整数那样写成八进制、二进制形式：
 
@@ -317,7 +311,7 @@ int main(void) {
 并用“浮点数不能用前缀”这样简化的说法帮助初学者形成直觉。  
 而在更高阶段学习标准（C99 及以后）时，就需要把十六进制浮点常量这一部分补充进来。
 
-\subsection{浮点数的后缀}
+\subsection{浮点数的后缀}%有代码，有表格
 
 浮点字面量只能用后缀确定类型，如表 \ref{tab:float-suffix} 所示。
 

@@ -28,6 +28,9 @@
 % 题注格式美化——统一图片/表格/代码等题注的字号、加粗、间距等      说明：与 listings 结合可获得一致的“代码 x：标题”样式
 \captionsetup{font=small,labelfont=bf} % 小号题注 + 加粗“标签名”
 
+\usepackage{subcaption}%子图支持
+% 子图支持——在一个 figure 环境内插入多个子图，并为每个子图添加独立题注
+
 \usepackage{enumitem}   % 自定义列表样式
 %\begin{enumerate}[label=\ding{\numexpr171+\arabic*}]
 %  \item 第一项
