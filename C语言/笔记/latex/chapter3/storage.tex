@@ -1,5 +1,5 @@
 \newpage
-\section{数据类型}
+\section{为什么我们需要数据类型}
 \subsection{计算机与数学}
 
 
@@ -308,13 +308,58 @@ C 标准明确要求无符号整数采用模 $2^n$ 算术，其中 $n$ 为类型
 
 \subsubsection{浮点精度损失（Floating-Point Precision Loss）}
 
-浮点数使用有限数量的比特来同时表示范围与精度。很多十进制小数在二进制中是\emph{无法精确表示}的，例如 $0.1$。因此，在实践中你常常会遇到：
 
+
+
+浮点数基于 IEEE~754 标准，在\emph{有限的位宽}内同时兼顾数值范围与精度。以单精度浮点数为例，它由 1 位符号、8 位阶码和 23 位尾数组成，每一个数值都被解释为
 \[
-0.1 + 0.2 \neq 0.3
+(-1)^s \times 1.f \times 2^{e-\text{bias}}
 \]
+其中 \texttt{bias} 为 127。由于只有 23 个显式尾数位（再加上隐藏的 1），任何无法在 24 位二进制小数中终止的十进制小数都必须被\textbf{截断或舍入}为附近的某个值。
 
-这不是计算机“算错了”，而是因为 \texttt{0.1}、\texttt{0.2} 和 \texttt{0.3} 都是以近似值存储，近似值之间的运算不再满足我们在实数域中的直觉。
+\paragraph{0.1 到底存储了什么？}
+
+
+以 $0.1_{10}$ 为例，它的二进制展开为：
+\[
+0.1_{10} = 0.0001100110011\ldots_2
+\]
+该序列会无限循环 \texttt{0011}，无法被有限位宽完整表示。单精度浮点数只能保留前 23 位并进行舍入，所以 \texttt{float} 版本的 \texttt{0.1f} 实际存储的是十六进制 \texttt{0x3dcccccd}，对应的数学值约为：
+\[
+0.100000001490116119384765625
+\]
+同理 \texttt{0.2f} 变为 \texttt{0x3e4ccccd}。这些值在写入内存的一瞬间就已经带上误差，后续的所有运算都只是在误差基础上继续推导。
+
+\paragraph{为什么 $0.1 + 0.2 \neq 0.3$？}
+\begin{lstlisting}
+float a = 0.1f;
+float b = 0.2f;
+printf("%.10f\n", a + b);       // 0.3000000119
+printf("%a\n", a + b);          // 0x1.333336p-2
+\end{lstlisting}
+编译器会把源代码常量转换为最近似的浮点值。\texttt{a} 和 \texttt{b} 相加后，结果需要再次在 24 位有效数字内舍入，于是得到 \texttt{0x1.333336p-2}（略大于 $0.3$）。这不是 CPU 算错，而是数学上的“真值”在映射到有限精度时被迫变化了。
+
+\paragraph{误差传播的典型场景}
+\begin{itemize}
+  \item \textbf{累计误差}：将 \texttt{0.1f} 循环累加 100 次，理论值为 10，但由于每次都引入约 1e-8 的误差，最终会得到 9.999999 或 10.000001。
+
+  \item \textbf{灾难性消除（catastrophic cancellation）}：当两个非常接近的浮点数相减时，阶码对齐会导致有效位大量被抵消，只剩下噪声。例如 \texttt{double x = 1e8; double y = x + 1;}，\texttt{y - x} 得到的仍是 0。
+
+  \item \textbf{比较陷阱}：直接做 \texttt{if (a == b)} 在浮点世界几乎总是错误的，因为“相等”只有在比特级完全相同时才成立。更合理的做法是比较差值是否小于某个阈值。
+\end{itemize}
+
+\paragraph{工程实践中的常见对策}
+\begin{itemize}
+  \item \textbf{规避精度要求}：涉及货币或需要十进制精度的场景使用整数（以分为单位）或专用的 decimal 库。
+
+  \item \textbf{控制运算顺序}：先累加小数再加大数可以减少阶码对齐造成的有效位丢失；在求和、积分类问题中可以使用 Kahan Summation 等补偿算法。
+
+  \item \textbf{设置容差}：比较时使用 \texttt{fabs(a - b) < eps} 的形式，并根据量级选择合适的绝对或相对误差。
+
+  \item \textbf{了解舍入模式}：IEEE~754 默认为“舍入到最接近，遇到中点取偶”（Round to nearest, ties to even）；必要时可以通过 \texttt{fesetround} 更改舍入策略。
+\end{itemize}
+
+只有真正理解浮点数是“有限精度的有理数近似”，才能在算法、图形、数值计算等场景中写出可靠的 C 代码。
 
 \subsubsection{截断（Truncation）}
 
