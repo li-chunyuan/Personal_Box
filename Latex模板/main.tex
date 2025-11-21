@@ -1,0 +1,109 @@
+% =============================================================
+% ① 文档类：ctexart 自带中文支持；A4 纸，12pt 字号
+\documentclass[a4paper,12pt]{ctexart}%ctexart 是专为中文排版准备的文档类
+
+\input{latex/config}
+% ======================    ======================================= 
+% ④ 题目信息（可随时修改）
+\title{C语言入门教程}
+\author{Grant Lee}
+\date{\today}
+
+% ==========================调试区=============================
+
+%\includeonly{latex/chapter3/basic}      %单独调试某一章节
+
+% ============================================================= 
+\begin{document}
+
+\maketitle
+\newpage%立即结束当前页，从下一页开始排版
+\tableofcontents
+\newpage%立即结束当前页，从下一页开始排版
+
+% ---------------------第一章内容 ------------------------------------
+\include{latex/chapter1/1}
+
+% ---------------------第二章内容 -----------------------------
+\include{latex/chapter2/2}
+
+% ---------------------第三章内容 -----------------------------
+\include{latex/chapter3/3}
+
+% ---------------------第四章内容 -----------------------------
+\include{latex/chapter4/4}
+
+% ---------------------第五章内容 -----------------------------
+\include{latex/chapter5/5}
+
+% --- 测试参考文献 ---
+我们都知道爱因斯坦的相对论 \cite{einstein}。
+图灵提出了图灵机的概念 \cite{turing1936}。
+香农奠定了信息论的基础 \cite{shannon1948}。
+Knuth 开发了 TeX 系统 \cite{knuth1984}。
+
+\newpage
+
+\printbibliography[heading=bibintoc, title=参考文献]
+
+
+
+
+
+
+
+
+\end{document}
+
+
+
+
+% ---- 插图占位（先注释，避免“文件找不到”错误） --------------
+% 使用方法：
+%  1) 在你的工程根目录创建 figures/ 文件夹
+%  2) 把图片放进去，并尽量用 jpg/png（不要用 webp）
+%  3) 取消下面整段注释，并把 nature.jpg 改成你的真实文件名
+
+%
+% \begin{figure}[htbp]
+%   \centering
+%   \includegraphics[width=0.8\linewidth]{figures/nature.jpg}
+%   \caption{示例图片（请替换为你的文件）}
+%   \label{fig:nature}
+% \end{figure}
+
+
+%项目编号
+
+%\begin{enumerate}[label=\ding{\numexpr171+\arabic*}]
+%  \item 第一项
+%  \item 第二项     ①②③④⑤…
+%  \item 第三项
+%\end{enumerate}
+
+
+% \begin{enumerate}[label={(\arabic*)}]
+%   \item 第一项
+%   \item 第二项    （1）（2）（3）
+%   \item 第三项
+% \end{enumerate}
+
+
+% =============================================================
+% ⑤ 参考文献使用指南（BibLaTeX）
+% =============================================================
+%
+% 1. 在正文中引用：
+%    - \cite{einstein}      -> [1]
+%    - \cite{turing1936}    -> [2]
+%    - \cite{shannon1948}   -> [3]
+%    - \cite{knuth1984}     -> [4]
+%    - \cite{einstein, knuth1984} -> [1, 4]
+%
+% 2. 在文档末尾（\end{document} 之前）打印参考文献列表：
+%    \printbibliography[heading=bibintoc, title=参考文献]
+%
+% 3. 确保 bib/ref.bib 文件中包含对应的 BibTeX 条目。
+
+
+
