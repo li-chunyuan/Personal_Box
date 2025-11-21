@@ -1,0 +1,194 @@
+
+\documentclass[12pt]{ctexart}
+
+\usepackage{geometry}
+\geometry{a4paper,margin=2.2cm}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=2em}
+\setlist[enumerate]{leftmargin=2em}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue
+}
+
+\title{嵌入式人生路线图（Gap Year 版本）}
+\author{Grant Lee}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{总体时间轴（概览）}
+
+\begin{center}
+\begin{tikzpicture}[
+    >=Stealth,
+    timeline/.style={thick},
+    phase/.style={rectangle,rounded corners,draw,align=center,inner sep=4pt,font=\small},
+    >=Stealth
+]
+    % 横轴
+    \draw[timeline] (0,0) -- (15,0);
+
+    % 刻度与标签
+    \foreach \x/\lab in {
+        0/Gap Year 起点,
+        2/0--3 月,
+        6/3--9 月,
+        9/9--12 月,
+        11/毕业后第 1 年,
+        13/毕业后第 2 年,
+        15/研一--研三
+    }{
+        \draw (\x,0.1) -- (\x,-0.1);
+        \node[below=3pt,font=\scriptsize,align=center] at (\x,-0.1) {\lab};
+    }
+
+    % 各阶段块
+    % 0-3 月：C 语言 + 写书
+    \node[phase,above=6mm of {(1,0)}] (p1) {0--3 月\\C 语言教材\\（写完 Part1--Part4）};
+    \draw[->] (1,0) -- (p1.south);
+
+    % 3-9 月：嵌入式实习
+    \node[phase,above=12mm of {(4.5,0)}] (p2) {3--9 月\\嵌入式实习 6 个月\\工具链 \& 工程经验};
+    \draw[->] (4.5,0) -- (p2.south);
+
+    % 9-12 月：回校读大四
+    \node[phase,above=6mm of {(8,0)}] (p3) {9--12 月\\回校读大四\\强化模电 / 数电};
+    \draw[->] (8,0) -- (p3.south);
+
+    % 毕业后第 1 年：考研 + 实习
+    \node[phase,above=12mm of {(11,0)}] (p4) {毕业后第 1 年\\考研\#1 + 嵌入式实习\\打磨基础与项目};
+    \draw[->] (11,0) -- (p4.south);
+
+    % 毕业后第 2 年：考研冲刺
+    \node[phase,above=6mm of {(13,0)}] (p5) {毕业后第 2 年\\考研\#2 备战\\保持工程手感};
+    \draw[->] (13,0) -- (p5.south);
+
+    % 研一--研三：深入方向
+    \node[phase,above=12mm of {(15,0)}] (p6) {研一--研三\\深入嵌入式/系统方向\\目标月薪 30k--40k};
+    \draw[->] (15,0) -- (p6.south);
+
+\end{tikzpicture}
+\end{center}
+
+\bigskip
+
+\section*{阶段拆解规划}
+
+\subsection*{阶段 1（0--3 月）：写完 C 语言教材 = 打完底层内功}
+
+\paragraph{目标：}
+\begin{itemize}
+    \item 以「写书」的形式系统学完 C 语言；
+    \item 写出一份可反复复用的个人 C 语言教材，用作之后所有项目与工作的参考手册。
+\end{itemize}
+
+\paragraph{建议结构（可按需调整）：}
+\begin{enumerate}[label=\textbf{Part \arabic*：},wide=0pt]
+    \item \textbf{基础部分（你正在写，计划本周完成）}
+    \begin{itemize}
+        \item C 程序基本结构、编译流程；
+        \item 变量与常量、字面量；
+        \item 各类数据类型（整数、浮点、字符、枚举、指针类型）；
+        \item 比特、字节、补码、IEEE~754、类型的本质；
+        \item 小结：\emph{类型 = 对比特模式的解释方式}。
+    \end{itemize}
+
+    \item \textbf{核心语法与指针体系}
+    \begin{itemize}
+        \item 表达式与运算符、控制语句（if/for/while/switch）；
+        \item 数组与字符串的内存布局；
+        \item 指针基础：地址、解引用、一维数组 \& 指针；
+        \item 指针与数组的等价形式：\verb|a[i] <=> *(a + i)|；
+        \item 多级指针、函数指针（点到为止即可）。
+    \end{itemize}
+
+    \item \textbf{组合与抽象能力}
+    \begin{itemize}
+        \item 函数与参数传递（值传递 vs. 地址传递）；
+        \item \texttt{struct}/\texttt{union}、位段、结构体内存对齐；
+        \item 使用结构体实现简单数据模型（如学生信息、任务描述等）。
+    \end{itemize}
+
+    \item \textbf{工程向部分（实习前打底）}
+    \begin{itemize}
+        \item 动态内存管理：\texttt{malloc/free/realloc}，常见内存错误；
+        \item 文件~IO：\texttt{fopen/fread/fwrite/fprintf}；
+        \item 多文件与头文件设计：\texttt{.h + .c} 的组织方式；
+        \item 简单构建流程：\texttt{gcc}、\texttt{Makefile}（入门级即可）。
+    \end{itemize}
+\end{enumerate}
+
+\paragraph{刻意跳过（暂不写 / 只点到为止）：}
+\begin{itemize}
+    \item C 标准的细枝末节（完整的 UB 列表、表达式求值顺序的极端细节）；
+    \item C11/C17 的多线程与原子操作；
+    \item 编译器内部实现（如 SSA、寄存器分配等）。
+\end{itemize}
+
+\subsection*{阶段 2（3--9 月）：嵌入式实习 6 个月 = 打开工具链与工程能力}
+
+\paragraph{目标：}
+\begin{itemize}
+    \item 用 6 个月换取真正的工程经验，而不是工资；
+    \item 熟悉主流 MCU（如 STM32）的完整开发流程；
+    \item 在真实项目中巩固 C 语言和 Part~1--4 内容。
+\end{itemize}
+
+\paragraph{重点收获（写在计划里，方便回顾）：}
+\begin{itemize}
+    \item 编译工具链：Keil / MDK / GCC / CMake / Make 等；
+    \item 硬件相关：GPIO、UART、SPI、I\textsuperscript{2}C、ADC、定时器、NVIC；
+    \item 调试技能：单步、断点、观察寄存器和内存；
+    \item 代码管理：Git 工作流、代码规范、Code Review；
+    \item 初步接触 RTOS（如 FreeRTOS）、简单任务调度逻辑。
+\end{itemize}
+
+\subsection*{阶段 3（9--12 月）：回校读大四 + 强化模电/数电}
+
+\paragraph{目标：}
+\begin{itemize}
+    \item 补强「模拟电路」「数字电路」基础，使自己具备\emph{软硬皆通}的嵌入式素质；
+    \item 在课程项目中有意识地选择与嵌入式 / 硬件相关的题目；
+    \item 整理本科学习阶段的知识，开始思考考研方向。
+\end{itemize}
+
+\subsection*{阶段 4（毕业后第 1--2 年）：考研窗口 + 实习穿插}
+
+\paragraph{第 1 年：}
+\begin{itemize}
+    \item 以考研为主线，构建系统的数学与专业基础复习计划；
+    \item 争取找到一份与嵌入式 / C 语言相关的兼职或短期实习，保持工程手感；
+    \item 根据初次考试结果，调整学校和方向定位。
+\end{itemize}
+
+\paragraph{第 2 年：}
+\begin{itemize}
+    \item 若第 1 年未成功，则第 2 年作为冲刺年，专注弥补短板；
+    \item 同样保持少量工程实践（避免毕业后「只有理论，没有手感」）。
+\end{itemize}
+
+\subsection*{阶段 5（研一--研三）：方向深入 + 项目沉淀}
+
+\paragraph{目标：}
+\begin{itemize}
+    \item 选定「嵌入式系统 / 操作系统 / 驱动 / 工业控制」等相关方向深入；
+    \item 至少完成 2--3 个具有代表性的工程项目（可在 GitHub 上公开展示）；
+    \item 毕业时具备月薪 30k--40k 的综合实力（底层扎实 + 工程经验 + 项目说服力）。
+\end{itemize}
+
+\bigskip
+\noindent\textbf{备注：}本计划是一个「可迭代」的版本，实际执行中可根据自身状态、机会和外界环境进行微调。核心思想是：
+\begin{center}
+    \emph{先打基础（C \& 电路）→ 再上工程战场（实习）→ 再系统提升（考研 \& 研究生）。}
+\end{center}
+
+\end{document}

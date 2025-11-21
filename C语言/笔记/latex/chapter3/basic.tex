@@ -161,7 +161,7 @@ U=\sum_{i=0}^{n-1} b_i\times 2^i,
 \newpage
 
 
-\subsection{浮点类型（Floating-Point Numbers）}
+\section{数据类型——浮点类型（Floating-Point Numbers）}
 
 C 提供 \texttt{float}、\texttt{double} 和 \texttt{long double} 
 三个主要的浮点类型，它们在现代平台上几乎都遵循 IEEE~754 浮点标准。
@@ -169,12 +169,19 @@ C 提供 \texttt{float}、\texttt{double} 和 \texttt{long double}
 但尾数位数有限，只有有限精度。
 
 
-\subsubsection{基本概念与名词解释}
+\subsection{基本概念与名词解释}\label{基本概念}
+
+在正式开始深入 IEEE~754 浮点数的细节之前，先在\autoref{基本概念}对这些基本概念做一个大致阐释，方便后续理解。
+\subsubsection{浮点数内存布局}
 
 IEEE~754 浮点数在内存中由三部分组成：
 \begin{itemize}
     \item \textbf{符号位（sign）}：1~bit，决定浮点数的正负。若 $s=0$ 则为正，$s=1$ 则为负。
-    \item \textbf{指数域（exponent field）}：用于存储被偏置的指数 $E$。float 占 8 位，double 占 11 位。
+    \item \textbf{指数域（exponent field）}：用于存储被偏置的指数 $E$。float 占
+     8 位，double 占 11 位。
+     
+     注意，指数域 = 硬件格式中的编码，这完全是人为规定的，
+     是 IEEE-754 标准约定的编码规则，不完全等同于数学中的指数本身。
     \item \textbf{尾数域（fraction/mantissa）}：存储有效数字的小数部分 $f$，float 占 23 位，double 占 52 位。
 \end{itemize}
 
@@ -190,7 +197,7 @@ IEEE~754 浮点数在内存中由三部分组成：
 部件 & 含义 & float(32\,bit) & double(64\,bit) \\
 \hline
 符号位（Sign） & 表示正负号 & 1 bit & 1 bit \\
-指数域（Exponent） & 表示科学计数法中的指数部分 & \textbf{8 bits} & \textbf{11 bits} \\
+指数域（Exponent） & 表示科学计数法中的指数部分 & 8 bits & 11 bits \\
 尾数域（Mantissa/Fraction） & 表示有效数字 & 23 bits & 52 bits \\
 \hline
 \end{tabular}
@@ -201,6 +208,175 @@ IEEE~754 中，正规化浮点数的数学表示形式为：
 \[
 (-1)^s \times (1.f)_2 \times 2^{\,e}
 \]
+
+
+
+
+\newpage
+\subsubsection{何为正规化浮点数}
+正规化浮点数（Normalized Floating-Point Number）的核心思想是：
+有效数字（尾数，Significand 或 Mantissa）的最高位必须是非零，并保持在规定的范围内。
+
+在 IEEE~754 浮点数标准中，只要指数域（exponent field）
+既不全为 0、也不全为 1，浮点数就会被认定为 \emph{正规化浮点数}
+（normalized number）。这类浮点数被强制写成统一的科学计数法形式，
+以便把有限的存储位宽尽可能用于记录有效数字。
+
+\vspace{1em}
+\noindent\textbf{(1)~十进制正规化浮点数类比}\par\vspace{0.5em}
+
+阅读完上面这两段话的你或许会感到吃力，不用担心，
+下面我们通过对比中学时代学过的十进制科学计数法来帮助理解正规化浮点数的概念。
+十进制的写法可以概括为
+\[
+\text{形如}\quad d_0.d_1d_2\ldots \times 10^k,\qquad 1 \le d_0 \le 9,
+\]
+为了唯一表示，我们规定其中 $d_0$ 是介于 1~到~9 （因为这里基数为10）之间的首位有效数字。
+这就叫 “正规化”。
+例如十进制数 $13.25$ 可以写成
+\[
+13.25 = 1.325 \times 10^{1},
+\]
+
+\begin{footnotesize}
+\noindent
+其中，1.325 称为\textbf{尾数（mantissa）}或\textbf{有效数（significand）}；\\
+$10^{1}$ 中的 1 称为\textbf{指数（exponent）}。
+\end{footnotesize}
+\vspace{1em}
+
+
+
+这就是一个正规化浮点数的例子，
+首位$d_0$必须是非零，且必须处于基数 radix 所决定的范围内。
+此例中 $d_0 = 1$、小数部分为 $0.325$、指数为 $k = 1$。
+若写成 $0.1325 \times 10^2$ ，虽然数值相同，
+却违反了“首位非零”的规范化规则。
+
+\vspace{1em}
+\noindent\textbf{(2)~二进制正规化浮点数}\par\vspace{0.5em}
+
+有了前面的示例，再理解 C 语言中的浮点数就容易多了。我们已经知道，
+计算机在底层全部采用二进制进行存储和计算，而 C 语言的浮点数同样
+遵循这一原则，其科学计数法的基数（base）为~2。
+
+因此，在采用二进制科学计数法表示浮点数时，也需要进行所谓的
+“正规化”（Normalization）。那么很显然，正规化之后，二进制浮点数
+的最高位只能是 1 。既然这样，干脆就限定最高位恒为 1 吧！
+
+IEEE~754 标准就规定这最高位不必显式存储，
+称为“隐含位”（implicit bit 或 hidden bit）。
+IEEE~754 于是在存储时把这一位视作 \emph{隐含位}，只记录后续的小数位：
+\[
+\text{二进制正规化形式}\quad 1.b_1b_2\ldots \times 2^e,\qquad b_i \in \{0,1\},
+\]
+这样无论是哪一个二进制实数，正规化后的尾数都固定以 `1.` 开头，等价写法就是常见的 $1.f$。仍以 $13.25$ 为例，它的二进制展开为 $1.10101_2 \times 2^3$，只需把 $10101$ 存入尾数域，并保存符号位和偏置后的指数，就得到了唯一的浮点编码。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{二进制浮点数}
+
+IEEE~754 浮点标准使用二进制表示形式：
+\[
+x = (-1)^s \times 1.\text{fraction} \times 2^{e}.
+\]
+
+二进制浮点数的正规化要求尾数满足：
+\[
+1 \le m < 2,
+\]
+因此尾数的最高位总是 $1$，称为隐含的 leading\ 1。
+
+\subsection{正规化的必要性}
+
+如果不对尾数进行规范化，同一个数可以有无数种表示方式，例如：
+\[
+50 = 5 \times 10^{1} = 50 \times 10^{0} = 0.5 \times 10^{2},
+\]
+这会导致比较困难、硬件实现复杂。
+
+正规化的目的在于让浮点数表示 \textbf{唯一且标准化}。
+
+\subsection{总结}
+
+正规化浮点数的尾数范围如下：
+
+\[
+\begin{array}{c|c|c}
+\text{进制} & \text{浮点形式} & \text{尾数正规化区间} \\
+\hline
+\text{十进制} & m \times 10^e & 1 \le m < 10 \\
+\text{二进制} & 1.f \times 2^e & 1 \le m < 2 \\
+\end{array}
+\]
+
+
+
+
+
+
+
+
+
+因此我们只需要把小数部分 $10101$ （实际的有效数字）写入尾数域，
+把最高位的 $1$ 看作 \emph{隐含位}（hidden bit 或 implicit leading~1），
+就能在不额外占用位宽的情况下完成存储。
+
+在C语言中的浮点数表示中，尾数域大致就是这样
+
+
+在二进制浮点数中，尾数的最高有效位被固定为~1，这样正规化浮点数的有效数字就可以统一写作
+\[
+1.f ,
+\]
+其中 $f$ 即尾数域中存放的二进制小数。
+
+对于正规化浮点数，其真实指数值为
+\[
+e = E - \mathrm{Bias},
+\]
+其中 $E$ 为指数域存储的无符号整数，$\mathrm{Bias}$ 为偏置常数：对 float（32 位）来说 $\mathrm{Bias}_{\text{float}} = 127$，对 double（64 位）来说 $\mathrm{Bias}_{\text{double}} = 1023$。
+
+综上，一个 IEEE~754 正规化浮点数的数值可表示为
+\[
+(-1)^s \times 2^e \times (1.f).
+\]
+这种“尾数前恒有隐含~1”且指数有限的表示方式，使正规化浮点数在相同存储位宽下能够提供更高的精度，因为最高有效位无需存储，从而节省出更多尾数位用于表示小数部分。
+
+
+
+
+
+
+
+
+todo:在这里插入一段关于对正规化浮点数的表述，不然小白不知道这是什么
+
+在 IEEE~754 标准中，只要指数域既不是全 $0$ 也不是全 $1$，该浮点数就被视作\emph{正规化浮点数（normalized number）}。此时真实指数满足
+\[
+e = E - \text{Bias}, \qquad \text{Bias}_{\text{float}} = 127,\ \text{Bias}_{\text{double}} = 1023
+\]同时尾数域默认有一个隐含的最高位 $1$，因此有效数字被解释为 $1.f$。综合起来，一个正规化浮点数的数值可写作
+\[
+(-1)^s \times 2^{\,e} \times (1.f)
+\]
+这也是浮点数能够在给定位宽下获得最大精度的原因，因为最高位的 $1$ 不必显式存储，节省出更多位给小数部分。
+
+
+
+
+
+
 
 当你对这些感到疑惑的时候，请放心，这是正常的，因为浮点数的表示方式本身就比较复杂。
 接下来我们将逐步解释这些新出现的概念，并通过具体示例来帮助理解。
@@ -234,10 +410,7 @@ IEEE~754 中，正规化浮点数的数学表示形式为：
 E = e + \mathrm{Bias}.
 \]
 
-对于单精度浮点数（float），偏置为：
-\[
-\mathrm{Bias} = 127.
-\]
+对于单精度浮点数（float），偏置为：\[\mathrm{Bias} = 127.\]
 
 例如，对于单精度浮点数（float），当实际指数为 $e=-3$ 时，有：
 \[
@@ -277,28 +450,13 @@ e = 2  &\Rightarrow E = 129.
 \noindent\textbf{(2)~尾数域：隐含位与有效数字}\vspace{0.5em}
 
 
-
-
-在讨论“规格化数（Normalized Number）”或“隐含位（Hidden Bit）”之前，
-首先需要了解 IEEE\,754 浮点数的基本组成方式。
-该标准将一个二进制浮点数拆分为三个部分：符号位（sign）、指数域（exponent）
-与尾数域（fraction 或 mantissa），其结构如下：
-
+同样的，由上文，我们已知IEEE~754 中，正规化浮点数的数学表示形式为：
 \[
-\underbrace{s}_{\text{符号位}}
-\quad
-\underbrace{E}_{\text{指数域}}
-\quad
-\underbrace{f}_{\text{尾数域}}
+(-1)^s \times (1.f)_2 \times 2^{\,e}
 \]
 
-其中：
-\begin{itemize}
-    \item 符号位 $s$ 表示正负号；
-    \item 指数域 $E$ 用于表示 $2^e$ 中的指数部分；
-    \item \textbf{尾数域 $f$ 用于表示有效数字的小数部分，是浮点数精度的来源。}
-\end{itemize}
 
+  这其中尾数域 $f$ 用于表示有效数字的小数部分，是浮点数精度的来源。
 以单精度浮点数为例，总共 32 位被固定划分为：
 \[
 1\text{ bit sign} + 8\text{ bits exponent} + 23\text{ bits fraction}.

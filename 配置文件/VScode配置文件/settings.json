@@ -2,7 +2,7 @@
       // ========================================================================== 
       // —— C/C++ 开发体验 ——C/C++ 插件功能设置和vscode自带的intellisense设置
       // ==========================================================================
-    "C_Cpp.intelliSenseEngine": "default",//启用默认 IntelliSense 引擎（实时语法分析、类型提示）
+    "C_Cpp.intelliSenseEngine": "disabled",//启用默认 IntelliSense 引擎（实时语法分析、类型提示）
     "C_Cpp.errorSquiggles": "enabled",//启用语法错误波浪线（调试更直观）
     "C_Cpp.autocomplete": "default",//启用 C/C++ 智能补全
       // 编译器设置
@@ -691,8 +691,8 @@
     "*.out",      // 大纲 (hyperrref)
     "*.fls",      // (latexmk) 使用的文件列表
     "*.fdb_latexmk", // (latexmk) 数据库
-    "*.synctex(busy)", // SyncTeX 锁定文件
-    "*.synctex.gz(busy)",
+    // "*.synctex(busy)", // SyncTeX 锁定文件
+    // "*.synctex.gz(busy)",
     // 参考文献 (BibTeX/Biber)
     "*.bbl",      // 编译后的文献列表
     "*.bcf",      // (biber) 控制文件
@@ -884,7 +884,8 @@
   },
   "workbench.editor.empty.hint": "hidden",
   "tabnine.experimentalAutoImports": true,
-  "settingsSync.ignoredSettings": []
+  "settingsSync.ignoredSettings": [],
+  "github.copilot.nextEditSuggestions.enabled": true
 
  // ===================================================================
   // 十三、 补丁（可选）
