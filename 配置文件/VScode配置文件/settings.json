@@ -518,6 +518,23 @@
         "%DIR%",
         "%DOC%.tex"          // 告诉 arara 要处理哪个文件
       ]
+    },
+    {
+      "name": "ensure-out-dirs",
+      "command": "cmd",
+      "args": [
+        "/c",
+        "robocopy \"%DIR%\" \"%OUTDIR%\" /E /XF * /XD out .git .vscode .history & exit 0"
+      ]
+    },
+    {
+      "name": "copy-pdf-to-root",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-Command",
+        "$doc = '%DOCFILE%'; $dir = '%DIR%'; $out = '%OUTDIR%'; $synctex = \"$dir\\$doc.synctex.gz\"; if (Test-Path \"$out\\$doc.pdf\") { Copy-Item \"$out\\$doc.pdf\" \"$dir\\$doc.pdf\" -Force }; if (Test-Path \"$out\\$doc.synctex.gz\") { Copy-Item \"$out\\$doc.synctex.gz\" $synctex -Force }; if (Test-Path $synctex) { (Get-Item -LiteralPath $synctex).Attributes = 'Hidden' }"
+      ]
     }
   ],
 
@@ -531,13 +548,15 @@
     // 它们都只包含一个工具，因为 latexmk 已经“全自动”处理了所有事情。
     {
       "name": "latexmk ▶ PDF（aux→out, pdf→root）",
-      "tools": ["latexmk-aux-only"]
+      "tools": ["ensure-out-dirs", "latexmk-aux-only", "copy-pdf-to-root"]
     },
     
     {
       "name": "latexmk: xelatex（推荐）",
       "tools": [
-        "latexmk (xelatex)" // 对应上面 Tools 定义的 name
+        "ensure-out-dirs",
+        "latexmk (xelatex)", // 对应上面 Tools 定义的 name
+        "copy-pdf-to-root"
       ]
     },
 
@@ -865,7 +884,9 @@
   // 【依赖】: 手动指定 .bib 目录
   // 如果你有一个全局的、私人的 .bib 数据库（例如放在 `/Users/Me/MyBibs`），
   // 但它又不在 TeX 系统路径中，你可以在这里手动添加它。
-  // "latex-workshop.latex.bibDirs": ["/绝对路径/到/你的/bib目录"],
+  "latex-workshop.latex.bibDirs": [
+    "%DIR%/bib"
+  ],
 
   // ===================================================================
   // 十二、 VS Code 编辑器配合（可选）
@@ -881,6 +902,9 @@
     "*.cls": "latex",
     "*.sty": "latex",
     "*.bib": "bibtex"
+  },
+  "files.exclude": {
+    "**/*.synctex.gz": true
   },
   "workbench.editor.empty.hint": "hidden",
   "tabnine.experimentalAutoImports": true,
