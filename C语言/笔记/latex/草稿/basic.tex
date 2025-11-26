@@ -1,7 +1,8 @@
-﻿\section{数据类型：数据在计算机中的表现形式}
+﻿
+\section{数据类型——基础知识入门}
 \subsection{小白需掌握的一些入门知识}
 
-在真正进入类型列表之前，先牢牢记住几个基础事实：
+在真正进入数据类型的深邃海洋之前，先牢牢记住几个基础事实：
 
 \begin{enumerate}[label=\ding{\numexpr171+\arabic*}]
  \item 计算机底层只处理二进制的 \texttt{0} 与 \texttt{1}；
@@ -31,6 +32,7 @@
   负数的补码是在反码的基础上加 1。对于正数，其补码与其原码相同。
   对于负数，其补码是其反码加 1。
   补码的一个重要特性是，任何数的补码加上该数本身，结果总是 0。
+  （这其中的奥妙之处读者可以先行思考，后续章节会详细展开）
   现代 CPU 的整数都存储为补码。
 \end{itemize}
 
@@ -60,10 +62,12 @@
     \]
     这个 \texttt{11010110} 就是 $-42$ 在 8 位补码表示下最终存入内存的比特模式。
 \end{enumerate}
+\newpage
 
 
-\subsection{整数类型（Signed Integers）}
-\subsubsection{有符号整数（Signed Integers）}
+
+\section{数据类型——整数类型（Signed Integers）}
+\subsection{有符号整数（Signed Integers）}
 
 C 语言的带符号整数采用补码（two's complement）形式：
 最高位是符号位，其余位代表数值部分，所有位共同
@@ -72,7 +76,6 @@ C 语言的带符号整数采用补码（two's complement）形式：
 
 对于占 4 字节的 \texttt{int} 而言，一共有 32 个比特，记作 $b_{31} b_{30} \ldots b_0$。
 最高位 $b_{31}$ 是符号位，其余 31 位表示数值部分，它们共同决定唯一的比特模式。先把所有比特当作无符号整数：
-
 \[
 U = \sum_{i=0}^{31} b_i \times 2^i \quad \text{（补码形式）}
 \]
@@ -127,7 +130,7 @@ U - 2^{32}, & b_{31} = 1
 \end{tabular}
 \end{table}
 
-\subsubsection{无符号整数（Unsigned Integers）}
+\subsection{无符号整数（Unsigned Integers）}
 
 无符号整数和有符号整数的比特位宽度相同
 但不设专门的符号位——所有位都用于表示数值。对于宽度为 \(n\) 的无符号整数，

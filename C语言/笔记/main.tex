@@ -1,7 +1,6 @@
 % =============================================================
 % ① 文档类：ctexart 自带中文支持；A4 纸，12pt 字号
 \documentclass[a4paper,12pt]{ctexart}%ctexart 是专为中文排版准备的文档类
-
 \input{latex/config}
 % ======================    ======================================= 
 % ④ 题目信息（可随时修改）
@@ -11,16 +10,14 @@
 
 % ==========================调试区=============================
 
-\includeonly{latex/chapter3/basic}      %单独调试某一章节
+%\includeonly{latex/chapter3_Literal/Literal}      %单独调试某一章节
 
 % ============================================================= 
 \begin{document}
-
 \maketitle
 \newpage%立即结束当前页，从下一页开始排版
 \tableofcontents
 \newpage%立即结束当前页，从下一页开始排版
-
 % ---------------------第一章内容 ------------------------------------
 \include{latex/chapter1/chapter1}
 
@@ -28,7 +25,43 @@
 \include{latex/chapter2/chapter2}
 
 % ---------------------第三章内容 -----------------------------
-\include{latex/chapter3/Literal}
+\include{latex/chapter3_Literal/Literal}
+
+% ---------------------第四章内容 -----------------------------
+\include{latex/chapter4/basic}
+
+% ---------------------第五章内容 -----------------------------
+\include{latex/chapter5/storage}
+
+% ---------------------第六章内容 -----------------------------
+\include{latex/chapter6/chapter4}
+
+% ---------------------第七章内容 -----------------------------
+% \include{latex/chapter7/chapter7}
+
+% % ---------------------第八章内容 -----------------------------
+% \include{latex/chapter8/chapter8}
+
+% % ---------------------第九章内容 -----------------------------
+% \include{latex/chapter9/chapter9}
+
+% % ---------------------第十章内容 -----------------------------
+% \include{latex/chapter10/chapter10}
+
+% % ---------------------第十一章内容 -----------------------------
+% \include{latex/chapter11/chapter11}
+
+% % ---------------------第十二章内容 -----------------------------
+% \include{latex/chapter12/chapter12}
+
+
+
+
+
+
+
+
+
 
 \include{latex/chapter3/basic}
 
