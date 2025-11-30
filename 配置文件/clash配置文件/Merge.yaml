@@ -1,0 +1,73 @@
+# 🚀 Clash 最终完美配置 (Merge) - Gold Release
+# 状态：终局版本
+# 集成：TUN接管 + DNS防泄漏 + TCP并发优化 + 个人规则
+
+# --- 1. 核心性能参数 ---
+mixed-port: 7897        # 端口锁定
+allow-lan: true         # 局域网共享
+bind-address: "*"
+ipv6: false             # 必须关闭，防止 IPv6 流量泄漏
+mode: rule
+log-level: info
+global-client-fingerprint: chrome  # 模拟 Chrome 指纹，防断连
+tcp-concurrent: true    # [吸取AI建议] TCP 并发握手，连接建立更快
+unified-delay: true     # [吸取AI建议] 消除协议差异，测速更准
+
+# --- 2. TUN 虚拟网卡 (驱动级接管) ---
+tun:
+  enable: true
+  stack: system         # Windows 还是 System 栈最稳
+  dns-hijack:
+    - any:53            # 劫持所有 DNS，不许偷跑
+  auto-route: true
+  auto-detect-interface: true
+
+# --- 3. DNS 智能分流 (防泄漏核心) ---
+dns:
+  enable: true
+  listen: 0.0.0.0:1053
+  enhanced-mode: fake-ip 
+  fake-ip-range: 198.18.0.1/16
+  respect-rules: true   # [关键] 直连流量直接解析，不走 Fake-IP
+  
+  # 3.1 国内直连解析 (极速)
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  nameserver:
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+    
+  # 3.2 国外防污染解析 (安全)
+  fallback:
+    - https://1.1.1.1/dns-query
+    - https://8.8.8.8/dns-query
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+
+  # 3.3 关键基础设施白名单 (防止时间同步失败/内网不通)
+  fake-ip-filter:
+    - "*.lan"
+    - "*.local"
+    - "localhost"
+    - "*.msftconnecttest.com"
+    - "*.msftncsi.com"
+    - "time.*.com"      # [保留] 保证 Windows 时间同步正常
+    - "ntp.*.com"       # [保留] 保证 NTP 协议正常
+
+# --- 4. 你的自定义规则 (最高优先级) ---
+prepend-rules:    #<-- 正确：这是“插队”指令，保留原有规则
+  - DOMAIN-SUFFIX,shu.edu.cn,DIRECT       # 上海大学
+  - DOMAIN-SUFFIX,i.chaoxing.com,DIRECT    # 学习通
+  - DOMAIN-SUFFIX,douyin.com,DIRECT        # 抖音
+  - DOMAIN-SUFFIX,bytecdn.cn,DIRECT
+  - DOMAIN-SUFFIX,byteimg.com,DIRECT
+  - DOMAIN-SUFFIX,bytedance.com,DIRECT
+  - DOMAIN-SUFFIX,ixigua.com,DIRECT
+  - PROCESS-NAME,抖音.exe,DIRECT
+
+# --- 5. 状态记忆 ---
+profile:
+  store-selected: true   # 记住你选的节点
+  store-fake-ip: true    # 记住 DNS 缓存

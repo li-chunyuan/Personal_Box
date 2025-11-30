@@ -1,0 +1,22 @@
+\contentsline {section}{引言：写在开始之前}{2}{section*.2}%
+\contentsline {section}{\numberline {1}下载与安装}{5}{section.1}%
+\contentsline {subsection}{\numberline {1.1}下载 Python}{5}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}安装步骤}{6}{subsection.1.2}%
+\contentsline {subsubsection}{\numberline {1.2.1}启动安装程序}{6}{subsubsection.1.2.1}%
+\contentsline {subsubsection}{\numberline {1.2.2}选择可选功能}{7}{subsubsection.1.2.2}%
+\contentsline {subsubsection}{\numberline {1.2.3}高级选项}{7}{subsubsection.1.2.3}%
+\contentsline {paragraph}{关于调试选项}{7}{paragraph*.13}%
+\contentsline {paragraph}{路径设置建议}{7}{paragraph*.14}%
+\contentsline {subsubsection}{\numberline {1.2.4}等待安装完成}{9}{subsubsection.1.2.4}%
+\contentsline {section}{\numberline {2}验证安装}{10}{section.2}%
+\contentsline {subsection}{\numberline {2.1}打开命令行}{10}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}检查 Python 版本}{10}{subsection.2.2}%
+\contentsline {section}{\numberline {3}VS Code Python 开发环境配置与 Hello World}{11}{section.3}%
+\contentsline {subsection}{\numberline {3.1}安装 Python 插件}{11}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}配置解释器作用范围}{13}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}选择具体解释器}{14}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}编写 Hello World}{15}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}进阶：理解与使用虚拟环境}{16}{subsection.3.5}%
+\contentsline {subsubsection}{\numberline {3.5.1}为什么需要虚拟环境？}{16}{subsubsection.3.5.1}%
+\contentsline {subsubsection}{\numberline {3.5.2}虚拟环境会重复安装 Python 吗？}{16}{subsubsection.3.5.2}%
+\contentsline {subsubsection}{\numberline {3.5.3}如何创建和使用虚拟环境}{16}{subsubsection.3.5.3}%

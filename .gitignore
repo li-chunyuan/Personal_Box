@@ -3,3 +3,18 @@
 *.aux      # 临时辅助文件
 *.log      # 日志文件
 # *.pdf     # ❌ 已被注释，不会再忽略 PDF 文件
+
+# 忽略 一些软件 下的大型软件，但保留文档
+一些软件/mingw64/*
+!一些软件/mingw64/*.txt
+!一些软件/mingw64/*.md
+!一些软件/mingw64/*.pdf
+!一些软件/mingw64/licenses/
+
+一些软件/Python/*
+!一些软件/Python/*.txt
+!一些软件/Python/*.md
+!一些软件/Python/*.pdf
+# ! 表示不忽略，保留 install_doc_latex 目录（您写的文档）
+
+!一些软件/Python/install_doc_latex/
