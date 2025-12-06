@@ -1,54 +1,146 @@
 \relax 
 \providecommand\hyper@newdestlabel[2]{}
-\@writefile{toc}{\contentsline {section}{\numberline {2}C语言的变量与常量}{8}{section.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}变量与常量的基本定义}{8}{subsection.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.1}变量}{8}{subsubsection.2.1.1}\protected@file@percent }
-\newlabel{lst:variables}{{4}{8}{变量声明示例}{lstlisting.4}{}}
-\newlabel{lst:variables@cref}{{[listing][4][]4}{[1][8][]8}{}{}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {4}{\ignorespaces 变量声明示例}}{8}{lstlisting.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.2}常量}{8}{subsubsection.2.1.2}\protected@file@percent }
-\newlabel{lst:define}{{5}{9}{使用 \#define 定义宏常量}{lstlisting.5}{}}
-\newlabel{lst:define@cref}{{[listing][5][]5}{[1][9][]9}{}{}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {5}{\ignorespaces 使用 \#define 定义宏常量}}{9}{lstlisting.5}\protected@file@percent }
-\newlabel{lst:const}{{6}{9}{使用 const 定 义常量变量}{lstlisting.6}{}}
-\newlabel{lst:const@cref}{{[listing][6][]6}{[1][9][]9}{}{}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {6}{\ignorespaces 使用 const 定 义常量变量}}{9}{lstlisting.6}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces 生活中的枚举数据：通讯录}}{10}{figure.caption.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}C语言的数据基石——变量、常量和字面量}{8}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}数据的原形：字面量(literal)的概念与初步认识}{8}{subsection.2.1}\protected@file@percent }
+\newlabel{lst:literal_example}{{4}{8}{C 语言中字面量的示例}{lstlisting.4}{}}
+\newlabel{lst:literal_example@cref}{{[listing][4][]4}{[1][8][]8}{}{}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4}{\ignorespaces C 语言中字面量的示例}}{8}{lstlisting.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.1}补充：字面量的定义}{8}{subsubsection.2.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.2}常见字面量的种类（根据 C17）}{9}{subsubsection.2.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.3}与“常量表达式”的区别}{9}{subsubsection.2.1.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.4}与“宏”或“const 对象”的区别}{9}{subsubsection.2.1.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}字面量的进制与类型区分}{10}{subsection.2.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces 日常生活}}{10}{figure.caption.2}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:Contacts}{{1}{10}{生活中的枚举数据：通讯录}{figure.caption.10}{}}
-\newlabel{fig:Contacts@cref}{{[figure][1][]1}{[1][10][]10}{}{}{}}
-\newlabel{lst:enum basic}{{7}{11}{使用 enum 基本规则}{lstlisting.7}{}}
-\newlabel{lst:enum basic@cref}{{[listing][7][]7}{[1][11][]11}{}{}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {7}{\ignorespaces 使用 enum 基本规则}}{11}{lstlisting.7}\protected@file@percent }
-\newlabel{lst:enum var}{{8}{11}{使用 enum 定义变量}{lstlisting.8}{}}
-\newlabel{lst:enum var@cref}{{[listing][8][]8}{[1][11][]11}{}{}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {8}{\ignorespaces 使用 enum 定义变量}}{11}{lstlisting.8}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}命名规则与规范}{12}{subsection.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.1}命名规则}{12}{subsubsection.2.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.2}代码命名规范}{12}{subsubsection.2.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}作用域与生命周期}{12}{subsection.2.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.1}变量}{12}{subsubsection.2.3.1}\protected@file@percent }
-\newlabel{lst:foo_static}{{9}{13}{局部变量与静态局部变量示例}{lstlisting.9}{}}
-\newlabel{lst:foo_static@cref}{{[listing][9][]9}{[1][13][]13}{}{}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {9}{\ignorespaces 局部变量与静态局部变量示例}}{13}{lstlisting.9}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.2}常量}{13}{subsubsection.2.3.2}\protected@file@percent }
+\newlabel{fig:daily life}{{1}{10}{日常生活}{figure.caption.2}{}}
+\newlabel{fig:daily life@cref}{{[figure][1][]1}{[1][10][]10}{}{}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.1}整数：通过前缀区分进制}{11}{subsubsection.2.2.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces 整数前缀及其含义}}{11}{table.caption.3}\protected@file@percent }
+\newlabel{tab:int-prefix}{{1}{11}{整数前缀及其含义}{table.caption.3}{}}
+\newlabel{tab:int-prefix@cref}{{[table][1][]1}{[1][11][]11}{}{}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.2}整数：通过后缀区分类型}{12}{subsubsection.2.2.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces 整数类型后缀}}{12}{table.caption.4}\protected@file@percent }
+\newlabel{tab:int-suffix}{{2}{12}{整数类型后缀}{table.caption.4}{}}
+\newlabel{tab:int-suffix@cref}{{[table][2][]2}{[1][12][]12}{}{}{}}
+\newlabel{lst:int-suffix}{{5}{12}{后缀示例}{lstlisting.5}{}}
+\newlabel{lst:int-suffix@cref}{{[listing][5][]5}{[1][12][]12}{}{}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5}{\ignorespaces 后缀示例}}{12}{lstlisting.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.3}浮点数：无前缀（Prefix 不可用）}{13}{subsubsection.2.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{使用前缀表示十六进制浮点字面量（C99 及以后）}{13}{paragraph*.5}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces 十六进制浮点常量示例及其对应值}}{14}{table.caption.6}\protected@file@percent }
+\newlabel{tab:hex-float}{{3}{14}{十六进制浮点常量示例及其对应值}{table.caption.6}{}}
+\newlabel{tab:hex-float@cref}{{[table][3][]3}{[1][14][]14}{}{}{}}
+\newlabel{code:hex-float}{{6}{14}{十六进制浮点常量示例}{lstlisting.6}{}}
+\newlabel{code:hex-float@cref}{{[listing][6][]6}{[1][14][]14}{}{}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {6}{\ignorespaces 十六进制浮点常量示例}}{14}{lstlisting.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}浮点数的后缀}{16}{subsection.2.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces 浮点数字面量类型与后缀}}{16}{table.caption.7}\protected@file@percent }
+\newlabel{tab:float-suffix}{{4}{16}{浮点数字面量类型与后缀}{table.caption.7}{}}
+\newlabel{tab:float-suffix@cref}{{[table][4][]4}{[1][16][]16}{}{}{}}
+\newlabel{code:float-suffix}{{7}{16}{浮点数后缀示例}{lstlisting.7}{}}
+\newlabel{code:float-suffix@cref}{{[listing][7][]7}{[1][16][]16}{}{}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {7}{\ignorespaces 浮点数后缀示例}}{16}{lstlisting.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}前后缀小结}{16}{subsection.2.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}字面量底层机制揭秘（ARM）}{17}{subsection.2.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.5.1}小整数：VIP 通道（塞进指令中，随身携带）}{17}{subsubsection.2.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.5.2}大整数与浮点数：物流通道（放到指定地点，去仓库取）}{18}{subsubsection.2.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6}特殊字面量：字符串字面量 (String Literals) 底层机制解密}{19}{subsection.2.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.6.1} 核心矛盾：因为字符串“太大”，只能“匿名”}{19}{subsubsection.2.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.6.2} 从代码到晶体管：物理映射流程}{19}{subsubsection.2.6.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.7}核心疑问解答}{20}{subsection.2.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.7.1}Q1:CPU读取字符串地址的指令在哪里？和大整数一样吗？}{20}{subsubsection.2.7.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.7.2}Q2: 编译器把源代码分为几个区域？都映射到 Flash 吗？}{20}{subsubsection.2.7.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces 常见的内存段分布}}{21}{table.caption.8}\protected@file@percent }
+\newlabel{tab:memory-sections}{{5}{21}{常见的内存段分布}{table.caption.8}{}}
+\newlabel{tab:memory-sections@cref}{{[table][5][]5}{[1][20][]21}{}{}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.7.3}Q3: 字符串字面量在内存中具体是如何存储和处理的？}{21}{subsubsection.2.7.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.8}字面量底层硬件原理总结：三种字面量的“物流通道”}{23}{subsection.2.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.8.1}小整数：VIP 随身通道 (Immediate)}{23}{subsubsection.2.8.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.8.2}大整数：专用物流通道 (Literal Pool)}{23}{subsubsection.2.8.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.8.3}字符串：超大集装箱 (Reference/Pointer)}{23}{subsubsection.2.8.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces 三种字面量底层机制对比}}{23}{table.caption.9}\protected@file@percent }
+\newlabel{tab:literal-mechanism-compare}{{6}{23}{三种字面量底层机制对比}{table.caption.9}{}}
+\newlabel{tab:literal-mechanism-compare@cref}{{[table][6][]6}{[1][23][]23}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.9}4. 关键思考：指针 vs 数组}{24}{subsection.2.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.10}字符串字面量：只读段与栈拷贝 (String Literals)}{24}{subsection.2.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.11}C99 复合字面量 (Compound Literals)}{25}{subsection.2.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.12}总结：字面量存储开销对比表}{25}{subsection.2.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.13}3.~例外情况：字符串与大型常量表}{25}{subsection.2.13}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.14}4.~立即数大小受体系结构限制}{25}{subsection.2.14}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.15}5.~字面量属于编译期常量}{26}{subsection.2.15}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.16}6.~更严谨的总结合述}{26}{subsection.2.16}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.17}变量与常量的基本定义}{26}{subsection.2.17}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.17.1}变量}{26}{subsubsection.2.17.1}\protected@file@percent }
+\newlabel{lst:variables}{{8}{26}{变量声明示例}{lstlisting.8}{}}
+\newlabel{lst:variables@cref}{{[listing][8][]8}{[1][26][]26}{}{}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {8}{\ignorespaces 变量声明示例}}{26}{lstlisting.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.17.2}常量}{26}{subsubsection.2.17.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}C 语言的变量与常量}{27}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}变量 (Variables)}{27}{subsection.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.1}声明与定义}{27}{subsubsection.3.1.1}\protected@file@percent }
+\newlabel{lst:variable_def}{{9}{27}{变量的定义与赋值}{lstlisting.9}{}}
+\newlabel{lst:variable_def@cref}{{[listing][9][]9}{[1][27][]27}{}{}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {9}{\ignorespaces 变量的定义与赋值}}{27}{lstlisting.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}常量 (Constants)}{28}{subsection.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.1}字面常量 (Literals)}{28}{subsubsection.3.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}三种定义“常量”符号的方式}{28}{subsection.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1}1. 宏常量 (\texttt  {\#define})}{28}{subsubsection.3.3.1}\protected@file@percent }
+\newlabel{lst:define_side_effect}{{10}{28}{宏常量的使用与副作用}{lstlisting.10}{}}
+\newlabel{lst:define_side_effect@cref}{{[listing][10][]10}{[1][28][]28}{}{}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {10}{\ignorespaces 宏常量的使用与副作用}}{28}{lstlisting.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2}2. 只读变量 (\texttt  {const})}{29}{subsubsection.3.3.2}\protected@file@percent }
+\newlabel{lst:const_var}{{11}{29}{const 只读变量}{lstlisting.11}{}}
+\newlabel{lst:const_var@cref}{{[listing][11][]11}{[1][29][]29}{}{}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {11}{\ignorespaces const 只读变量}}{29}{lstlisting.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.3}3. 枚举常量 (\texttt  {enum})}{29}{subsubsection.3.3.3}\protected@file@percent }
+\newlabel{lst:enum_usage}{{12}{29}{枚举的使用}{lstlisting.12}{}}
+\newlabel{lst:enum_usage@cref}{{[listing][12][]12}{[1][29][]29}{}{}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {12}{\ignorespaces 枚举的使用}}{29}{lstlisting.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}总结与对比}{30}{subsection.3.4}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces 三种常量定义方式对比}}{30}{table.caption.10}\protected@file@percent }
+\newlabel{tab:const_compare}{{7}{30}{三种常量定义方式对比}{table.caption.10}{}}
+\newlabel{tab:const_compare@cref}{{[table][7][]7}{[1][30][]30}{}{}{}}
+\newlabel{lst:define}{{13}{31}{使用 \#define 定义宏常量}{lstlisting.13}{}}
+\newlabel{lst:define@cref}{{[listing][13][]13}{[1][31][]31}{}{}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {13}{\ignorespaces 使用 \#define 定义宏常量}}{31}{lstlisting.13}\protected@file@percent }
+\newlabel{lst:const}{{14}{31}{使用 const 定 义常量变量}{lstlisting.14}{}}
+\newlabel{lst:const@cref}{{[listing][14][]14}{[1][31][]31}{}{}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {14}{\ignorespaces 使用 const 定 义常量变量}}{31}{lstlisting.14}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces 生活中的枚举数据：通讯录}}{32}{figure.caption.11}\protected@file@percent }
+\newlabel{fig:Contacts}{{2}{32}{生活中的枚举数据：通讯录}{figure.caption.11}{}}
+\newlabel{fig:Contacts@cref}{{[figure][2][]2}{[1][32][]32}{}{}{}}
+\newlabel{lst:enum basic}{{15}{33}{使用 enum 基本规则}{lstlisting.15}{}}
+\newlabel{lst:enum basic@cref}{{[listing][15][]15}{[1][33][]33}{}{}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {15}{\ignorespaces 使用 enum 基本规则}}{33}{lstlisting.15}\protected@file@percent }
+\newlabel{lst:enum var}{{16}{33}{使用 enum 定义变量}{lstlisting.16}{}}
+\newlabel{lst:enum var@cref}{{[listing][16][]16}{[1][33][]33}{}{}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {16}{\ignorespaces 使用 enum 定义变量}}{33}{lstlisting.16}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}命名规则与规范}{34}{subsection.3.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.5.1}命名规则}{34}{subsubsection.3.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.5.2}代码命名规范}{34}{subsubsection.3.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6}作用域与生命周期}{34}{subsection.3.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.6.1}变量}{34}{subsubsection.3.6.1}\protected@file@percent }
+\newlabel{lst:foo_static}{{17}{35}{局部变量与静态局部变量示例}{lstlisting.17}{}}
+\newlabel{lst:foo_static@cref}{{[listing][17][]17}{[1][35][]35}{}{}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {17}{\ignorespaces 局部变量与静态局部变量示例}}{35}{lstlisting.17}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.6.2}常量}{35}{subsubsection.3.6.2}\protected@file@percent }
 \@setckpt{latex/chapter2/C语言的变量与常量}{
-\setcounter{page}{14}
+\setcounter{page}{36}
 \setcounter{equation}{0}
 \setcounter{enumi}{3}
-\setcounter{enumii}{0}
+\setcounter{enumii}{2}
 \setcounter{enumiii}{0}
 \setcounter{enumiv}{0}
-\setcounter{footnote}{0}
+\setcounter{footnote}{3}
 \setcounter{mpfootnote}{0}
 \setcounter{part}{0}
-\setcounter{section}{2}
-\setcounter{subsection}{3}
+\setcounter{section}{3}
+\setcounter{subsection}{6}
 \setcounter{subsubsection}{2}
 \setcounter{paragraph}{0}
 \setcounter{subparagraph}{0}
-\setcounter{figure}{1}
-\setcounter{table}{0}
+\setcounter{figure}{2}
+\setcounter{table}{7}
 \setcounter{float@type}{8}
 \setcounter{caption@flags}{2}
 \setcounter{continuedfloat}{0}
@@ -171,9 +263,9 @@
 \setcounter{bbx:relatedcount}{0}
 \setcounter{bbx:relatedtotal}{0}
 \setcounter{section@level}{0}
-\setcounter{Item}{13}
-\setcounter{Hfootnote}{0}
+\setcounter{Item}{55}
+\setcounter{Hfootnote}{3}
 \setcounter{Hy@AnnotLevel}{0}
-\setcounter{bookmark@seq@number}{11}
-\setcounter{lstlisting}{9}
+\setcounter{bookmark@seq@number}{32}
+\setcounter{lstlisting}{17}
 }
