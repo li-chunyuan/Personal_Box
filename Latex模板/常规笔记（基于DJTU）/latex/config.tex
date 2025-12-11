@@ -1,0 +1,206 @@
+% =============================================================
+% ① 【最优先加载】基础工具与核心设置
+% =============================================================
+% 说明：xcolor 必须尽早加载以防冲突；microtype 改善排版质量
+\usepackage[table, svgnames]{xcolor}  % 颜色支持 (table支持表格彩色, svgnames支持更多颜色)
+\usepackage{microtype}                % 微排版 (改进字距/断行)
+\usepackage{setspace}                 % 行距设置宏包
+\setlength{\baselineskip}{20pt}       % 设定正文行距为固定值 20磅
+
+% =============================================================
+% ② 字体设置与特殊符号
+% =============================================================
+\usepackage{pifont}                   % 特殊符号 (如带圈数字)
+
+% 字体设置 (配合 main.tex 的 ctexart)
+\setmainfont{Times New Roman}         % 英文/数字主字体
+\setCJKmainfont[AutoFakeBold=true]{SimSun} % 中文主字体强制设为宋体
+
+% =============================================================
+% ③ 页面布局与页眉页脚
+% =============================================================
+% 3.1 页面边距设置
+\usepackage[a4paper,
+  top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm, % 页边距
+  headsep=0.5cm,   % 页眉文字底部到正文顶部的距离
+  headheight=15pt, % 页眉高度
+  footskip=0.75cm, % 正文底部到页脚底部的距离
+]{geometry}
+
+% 3.2 页眉页脚设置
+\usepackage{fancyhdr}
+\fancypagestyle{reportstyle}{       % 定义 'reportstyle' 风格
+  \fancyhf{} % 清空当前设置
+  % 页眉：宋体小五，居中，显示章节标题
+  \fancyhead[C]{\songti\zihao{-5} \leftmark}
+  % 页脚：宋体小五，居中，显示页码
+  \fancyfoot[C]{\songti\zihao{-5} \thepage}
+  % 页眉横线
+  \renewcommand{\headrulewidth}{0.5pt} 
+}
+
+% =============================================================
+% ④ 数学公式与符号
+% =============================================================
+\usepackage{amsmath}    % 基础数学环境
+\usepackage{amssymb}    % 更多数学符号
+\usepackage{mathtools}  % amsmath 增强补丁 (需后加载)
+
+% =============================================================
+% ⑤ 图表与浮动体设置
+% =============================================================
+\usepackage{graphicx}   % 插图支持
+\usepackage{float}      % 强行不浮动 [H]
+\usepackage{subcaption} % 子图支持
+
+% 5.1 表格支持
+\usepackage{array}      % 基础表格扩展
+\usepackage{tabularx}   % 自动列宽
+\newcolumntype{C}{>{\centering\arraybackslash}X} % 定义居中自动列
+\usepackage{booktabs}   % 三线表 (\toprule, \midrule, \bottomrule)
+\usepackage{threeparttable} % 表格附注
+
+% 5.2 题注格式 (Caption)
+\usepackage{caption}
+\DeclareCaptionFont{wuhao}{\zihao{5}\songti} % 定义宋体五号
+\captionsetup{
+    font=wuhao,
+    labelsep=quad,         % 序号后空一汉字宽
+    justification=centering,
+    singlelinecheck=true
+}
+% 表格标题特殊设置 (标题在上方)
+\captionsetup[table]{position=top, skip=6pt}
+% 图标题特殊设置 (标题在下方)
+\captionsetup[figure]{position=bottom}
+
+% 5.3 图表编号格式 (图 2-1)
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+\renewcommand{\thefigure}{\thesection-\arabic{figure}}
+\renewcommand{\thetable}{\thesection-\arabic{table}}
+
+% =============================================================
+% ⑥ 功能扩展 (列表、代码、URL)
+% =============================================================
+\usepackage{enumitem}   % 列表定制
+\usepackage{xurl}       % URL 自动换行 (优化参考文献排版)
+
+% 代码高亮设置
+\usepackage{listings}
+\renewcommand{\lstlistingname}{代码}
+\lstdefinestyle{cstyle}{
+  language=C,
+  basicstyle=\ttfamily\small,
+  numbers=left,
+  numberstyle=\scriptsize\color{gray},
+  numbersep=8pt,
+  commentstyle=\color{gray!70!black},
+  showstringspaces=false,
+  tabsize=4,
+  frame=single,
+  rulecolor=\color{teal!70!blue!30},
+  frameround=tttt,
+  columns=fullflexible,
+  keepspaces=true
+}
+\lstset{style=cstyle}
+
+% =============================================================
+% ⑦ 章节标题与目录样式 (Styling)
+% =============================================================
+% 7.1 章节标题格式 (ctexset)
+\ctexset{
+    section = {
+        format = \zihao{3}\heiti\centering,
+        beforeskip = 30pt,
+        afterskip = 20pt,
+        number = \arabic{section}
+    },
+    subsection = {
+        format = \zihao{4}\heiti\raggedright,
+        beforeskip = 25pt,
+        afterskip = 12pt,
+    },
+    subsubsection = {
+        format = \zihao{-4}\heiti\raggedright,
+        beforeskip = 12pt,
+        afterskip = 6pt,
+    },
+    contentsname = {目\hspace{2em}录} % 目录标题格式
+}
+\setcounter{secnumdepth}{3} % 编号深度
+
+% =============================================================
+
+% 7.2 目录样式 (titletoc)
+\usepackage{titletoc}
+\setcounter{tocdepth}{2}    % 目录显示深度
+
+% 一级标题 (Section)
+\titlecontents{section}[0pt]
+    {\addvspace{0.4em}\heiti\zihao{-4}}
+    {\thecontentslabel\hspace{1em}}
+    {}
+    {\titlerule*[0.6pc]{.}\contentspage}
+
+% 二级标题 (Subsection)
+\titlecontents{subsection}[2em]
+    {\addvspace{0.1em}\songti\zihao{-4}}
+    {\thecontentslabel\hspace{1em}}
+    {}
+    {\titlerule*[0.6pc]{.}\contentspage}
+
+% 三级标题 (Subsubsection)
+\titlecontents{subsubsection}[4em]
+    {\addvspace{0em}\songti\zihao{-4}}
+    {\thecontentslabel\hspace{1em}}
+    {}
+    {\titlerule*[0.6pc]{.}\contentspage}
+
+% =============================================================
+% ⑧ 参考文献设置
+% =============================================================
+\usepackage[style=gb7714-2015, backend=biber, sorting=none]{biblatex}
+\addbibresource{bib/ref.bib}
+
+% 外观定制
+\renewcommand{\bibfont}{\zihao{5}\songti} % 宋体五号
+\setlength{\bibitemsep}{3pt}              % 条目间距
+\setlength{\bibnamesep}{0pt}
+\setlength{\bibinitsep}{0pt}
+\setlength{\biblabelsep}{1.5em}           % 序号与内容间距 (悬挂缩进)
+
+% URL 断行优化
+\setcounter{biburllcpenalty}{7000}
+\setcounter{biburlucpenalty}{8000}
+
+% 标题间距调整
+\defbibheading{bibliography}[\bibname]{%
+  \section*{#1}%
+  \markboth{#1}{#1}%
+  \addvspace{20pt}
+}
+
+% =============================================================
+% ⑨ 【最后加载】超链接与智能引用
+% =============================================================
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=false,   % 不用彩色文字
+  pdfborder={0 0 0}   % 去掉红框
+}
+
+\usepackage{cleveref} % 必须在 hyperref 之后
+\crefname{lstlisting}{代码}{代码}
+\providecommand{\lstlistingautorefname}{代码}
+\renewcommand{\figurename}{图}
+\renewcommand{\figureautorefname}{图}
+\renewcommand{\tablename}{表}
+\renewcommand{\tableautorefname}{表}
+\renewcommand{\sectionautorefname}{章}
+\renewcommand{\subsectionautorefname}{节}
+\renewcommand{\subsubsectionautorefname}{小节}
+
+
+

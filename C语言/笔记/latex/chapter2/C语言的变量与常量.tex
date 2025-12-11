@@ -669,8 +669,9 @@ int main(void) {
      \texttt{'l'}, \texttt{'l'}, \texttt{'o'}，\texttt{'\textbackslash 0'}，
     合成一个字符串。
 \end{enumerate}
+\newpage
 
-\subsubsection{Q2: 编译器把源代码分为几个区域？都映射到 Flash 吗？}`'
+\subsubsection{Q2: 编译器把源代码分为几个区域？都映射到 Flash 吗？}
 
 \textbf{答案：主要分为 4 个核心段。并非所有都映射到 Flash。}
 \vspace{1em}
@@ -690,7 +691,7 @@ int main(void) {
 \end{tabular}
 \end{table}
 
-\newpage
+
 \textbf{详细解析：}
 \begin{itemize}
     \item \textbf{.text 和 .rodata}：这就是纯粹的“不动产”，一直躺在 Flash 里，CPU 直接去 Flash 里取指和读数据。
@@ -731,6 +732,68 @@ int main(void) {
 
 
 \newpage
+
+
+
+
+\subsubsection{Q4: 如果 CPU 不小心“执行”到了 Literal Pool 里的数据会发生什么？}
+
+\textbf{答案：CPU 会尝试将数据当作指令解码，通常导致“未定义指令异常”。}
+
+\vspace{1em}
+
+这是一个非常危险的情况。CPU 是一种 \textbf{取指-解码-执行} 的机器，它本身无法区分当前 PC 指向的是代码还是数据。如果程序逻辑出错（例如忘记写 \texttt{B} 跳转指令），导致 PC 滑入 Literal Pool：
+\begin{itemize}
+    \item 运气好时：数据对应的二进制位不符合任何有效指令格式，CPU 抛出 \textbf{Undefined Instruction Exception}，程序崩溃但能定位错误。
+    \item 运气差时：数据恰好对应一条有效指令（例如 \texttt{AND} 或 \texttt{MOV}），CPU 会错误地执行它，破坏寄存器状态，导致难以调试的逻辑 Bug。
+\end{itemize}
+这也解释了为什么汇编器通常把 Literal Pool 放在 \textbf{无条件跳转指令} 之后。
+
+
+\subsubsection{Q5: 既然要分散放置，编译器报错 "Literal pool out of range" 是什么意思？}
+
+\textbf{答案：这意味着两个“文字池”之间的距离太远了，超过了指令的“射程”。}
+
+\vspace{1em}
+
+这直接对应了我们在上文中提到的 \textbf{PC 相对寻址限制}。
+\begin{itemize}
+    \item 假设你写了一个巨大的函数，长度超过了 4KB（在某些 ARM 模式下）。
+    \item 这里的指令试图读取函数末尾 Literal Pool 里的常量。
+    \item 但是指令中的 offset 字段位宽不够，无法编码这么大的距离。
+\end{itemize}
+此时必须在代码中间（例如循环或分支的跳转点之后）手动插入一个新的 \texttt{.ltorg}，强行在此处建立一个中转站（新的文字池），缩短指令到数据的距离。
+
+\subsubsection{Q4: 为什么不直接把所有常量都放在 .data 或 .rodata 段，像普通全局变量那样访问？}
+
+\textbf{答案：为了性能和代码密度。}
+
+\vspace{1em}
+
+虽然可以这样做，但并不高效：
+\begin{itemize}
+    \item \textbf{访问成本：} 访问 \texttt{.data} 段通常需要先加载数据段的基地址到寄存器，再进行偏移访问，这需要多条指令。
+    \item \textbf{文字池优势：} 使用 Literal Pool 配合 \texttt{LDR}（PC 相对寻址），通常只需要 \textbf{一条指令} 就能把常量加载进寄存器，且不需要占用额外的寄存器来保存基地址。
+\end{itemize}
+Literal Pool 是为了解决“如何快速将大立即数加载到寄存器”这一具体微架构问题而生的特殊机制。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 \subsection{字面量底层硬件原理总结：三种字面量的“物流通道”}
