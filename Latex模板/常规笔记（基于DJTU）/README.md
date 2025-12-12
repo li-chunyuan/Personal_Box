@@ -1,5 +1,13 @@
 # 开箱即用的LaTeX 通用笔记模板 (基于 DJTU)
 
+## 🛠️ 必备工具清单
+
+本模板依赖以下环境，请在使用前安装：
+
+1.  **Visual Studio Code (VS Code)**：[官网下载](https://code.visualstudio.com/)
+2.  **TeX Live** (推荐 2024 或更新版本)：[官网下载](https://www.tug.org/texlive/) / [清华大学镜像站](https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/Images/) (国内推荐)
+3.  **LaTeX Workshop** (VS Code 插件)：在 VS Code 扩展市场中搜索并安装。
+
 ## 1. 模板格式说明
 
 本模板基于 `ctexart` 文档类，预设了符合一般学术笔记或报告的排版格式。以下是详细的格式设置参数，方便您快速了解并根据需求在 `latex/config.tex` 中进行修改。
