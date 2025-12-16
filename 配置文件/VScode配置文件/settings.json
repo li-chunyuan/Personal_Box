@@ -343,6 +343,7 @@
         "-interaction=nonstopmode",
         "-file-line-error",
         "-auxdir=%DIR%/out",
+        "-outdir=%DIR%/out",
         "-emulate-aux-dir",
         "%DOC%"
   ]
@@ -909,7 +910,8 @@
   "workbench.editor.empty.hint": "hidden",
   "tabnine.experimentalAutoImports": true,
   "settingsSync.ignoredSettings": [],
-  "github.copilot.nextEditSuggestions.enabled": true
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "workbench.colorTheme": "Winter is Coming (Dark Black - No Italics)"
 
  // ===================================================================
   // 十三、 补丁（可选）
