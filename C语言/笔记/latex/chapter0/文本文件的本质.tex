@@ -1,0 +1,102 @@
+% ===================== 第零章：文本文件的本质 =====================
+\section{文本文件的本质}
+\label{sec:text_file_essence}
+
+在学习 C 语言之前，我们有必要理解一个更为基础的概念——文本文件。你编写的每一行 C 代码，都存储在文本文件中。那么，文本文件究竟是什么？
+
+\subsection{从比特到字符}
+\label{subsec:bits_to_chars}
+
+计算机的世界只有两种状态：0 和 1。这是最基本的信息单元，称为\textbf{比特} (Bit)。8 个比特组成一个\textbf{字节} (Byte)，一个字节可以表示 $2^8 = 256$ 种不同的状态。
+
+\begin{enumerate}[label={(\arabic*)}]
+    \item 比特是计算机存储信息的最小单位，只能取 0 或 1。
+    \item 字节是计算机处理数据的基本单位，由 8 个比特组成。
+    \item 通过约定，我们可以让不同的字节值代表不同的字符。
+\end{enumerate}
+
+\subsection{字符编码：建立数字与符号的映射}
+\label{subsec:char_encoding}
+
+为了让计算机能够处理人类可读的文字，我们需要建立一套规则，将数字与字符对应起来。这套规则称为\textbf{字符编码} (Character Encoding)。
+
+\subsubsection{ASCII 编码}
+
+ASCII (American Standard Code for Information Interchange) 是最早也是最基础的字符编码标准。它使用 7 个比特（实际存储时占用 1 个字节）来表示 128 个字符：
+
+\begin{enumerate}[label={(\arabic*)}]
+    \item 控制字符（0--31）：如换行符、制表符等不可见字符。
+    \item 可打印字符（32--126）：包括空格、数字、大小写字母、标点符号。
+    \item 数字 \texttt{'0'} 到 \texttt{'9'} 对应编码 48--57。
+    \item 大写字母 \texttt{'A'} 到 \texttt{'Z'} 对应编码 65--90。
+    \item 小写字母 \texttt{'a'} 到 \texttt{'z'} 对应编码 97--122。
+\end{enumerate}
+
+\begin{lstlisting}[language=C, caption={ASCII 编码示例}, label={lst:ascii_example}]
+// 字符 'A' 的 ASCII 值是 65
+char ch = 'A';
+printf("%d\n", ch);  // 输出: 65
+
+// 数字字符与实际数值的关系
+char digit = '7';
+int value = digit - '0';  // value = 7
+\end{lstlisting}
+
+\subsubsection{从 ASCII 到 Unicode}
+
+ASCII 只能表示 128 个字符，无法满足全球各种语言的需求。为此，人们发展出了多种扩展编码方案，最终形成了 Unicode 标准。
+
+\begin{enumerate}[label={(\arabic*)}]
+    \item Unicode 为世界上几乎所有的文字系统分配了唯一的码点 (Code Point)。
+    \item UTF-8 是一种变长编码，兼容 ASCII，使用 1--4 个字节表示一个字符。
+    \item 中文字符在 UTF-8 中通常占用 3 个字节。
+\end{enumerate}
+
+\subsection{文本文件的存储结构}
+\label{subsec:text_file_storage}
+
+理解了字符编码后，我们可以揭示文本文件的本质：
+
+\begin{enumerate}[label={(\arabic*)}]
+    \item 文本文件是一串字节的序列，每个字节（或字节组合）按照特定编码规则对应一个字符。
+    \item 当你在编辑器中看到 \texttt{Hello} 时，硬盘上实际存储的是：\texttt{48 65 6C 6C 6F}（十六进制）。
+    \item 换行符在不同操作系统中的表示不同：
+        \begin{enumerate}[label={(\roman*)}]
+            \item Unix/Linux/macOS：\texttt{LF}（\texttt{0x0A}，即 \verb|\n|）
+            \item Windows：\texttt{CR LF}（\texttt{0x0D 0x0A}，即 \verb|\r\n|）
+        \end{enumerate}
+\end{enumerate}
+
+\subsection{源代码文件：特殊的文本文件}
+\label{subsec:source_code_file}
+
+C 语言的源代码文件（通常以 \texttt{.c} 为扩展名）本质上就是普通的文本文件，但有以下特点：
+
+\begin{enumerate}[label={(\arabic*)}]
+    \item 内容遵循 C 语言的语法规则。
+    \item 编译器读取这些文本，将其翻译成机器能执行的二进制代码。
+    \item 你可以用任何文本编辑器打开和编辑 \texttt{.c} 文件。
+\end{enumerate}
+
+\begin{lstlisting}[language=C, caption={一个简单的 C 源文件}, label={lst:simple_source}]
+#include <stdio.h>
+
+int main(void) {
+    printf("Hello, World!\n");
+    return 0;
+}
+\end{lstlisting}
+
+当你保存这段代码时，编辑器会将每个字符转换为对应的字节值，依次写入硬盘。编译器读取时，再将字节还原为字符，进行语法分析和翻译。
+
+\subsection{本章小结}
+\label{subsec:text_file_summary}
+
+\begin{enumerate}[label={(\arabic*)}]
+    \item 计算机使用比特（0 和 1）存储一切信息，8 个比特组成 1 个字节。
+    \item 字符编码是数字与字符之间的映射规则，ASCII 是最基础的编码标准。
+    \item 文本文件本质上是按特定编码存储的字节序列。
+    \item C 语言源代码是遵循特定语法规则的文本文件，由编译器翻译成机器码。
+\end{enumerate}
+
+理解文本文件的本质，有助于你在后续学习中更好地理解字符类型、字符串处理以及文件操作等概念。

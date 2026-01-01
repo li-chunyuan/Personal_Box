@@ -14,15 +14,29 @@
 - **资源与配置**：图片统一存放于 `figures/`，全局宏包与样式定义位于 `latex/config.tex`。
 
 ## 3. 环境与格式约束
-### 3.1 列表格式 (List Environments)
-- **强制要求**：所有标题（\section, \subsection 等）后的分点叙述，必须使用 `enumerate` 环境，并带有参数 `[label={(\arabic*)}]`。
-- **禁止使用**：`itemize` 或不带参数的默认 `enumerate`。
-- **示例**：
-  ```latex
-  \begin{enumerate}[label={(\arabic*)}]
-    \item 第一项内容
-    \item 第二项内容
-  \end{enumerate}
+### 3.1 层次结构与列表规则 (Hierarchy & List Rules)
+
+- **标题层级规范**：文档正文默认遵循三级标题结构（即 `\section` -> `\subsection` -> `\subsubsection`）。
+- **三级标题后的分点**：在 `\subsubsection` 之后若需进一步细分内容，必须使用 `enumerate` 环境，并带有参数 `[label={(\arabic*)}]`。
+- **三级标题前的决策逻辑**：在未达到三级标题前，若需对内容进行拆解，请根据内容体量选择表现形式：
+    - **使用列表环境**：若分点内容仅为寥寥数语、短句或摘要性质，必须使用带有 `[label={(\arabic*)}]` 参数的 `enumerate` 环境。
+    - **使用下一级标题**：若分点内容包含大量长句、详细的技术推导或需要多个段落展开论述，必须使用下一级标题。
+- **禁令**：在任何情况下，禁止使用 `itemize` 或不带参数的默认 `enumerate`。
+
+**代码示例**：
+```latex
+% 情境 A：内容简短，使用列表
+\subsection{指针定义}
+本文定义包含以下要素：
+\begin{enumerate}[label={(\arabic*)}]
+  \item 类型声明
+  \item 地址关联
+\end{enumerate}
+
+% 情境 B：内容冗长，使用标题
+\subsection{指针进阶}
+\subsubsection{多级指针的内存模型}
+此处有大量的底层原理解析内容...
   ```
 
 ### 3.2 文本样式
